@@ -1,3 +1,105 @@
+:root {
+    --accent-color: #d00000;
+    --accent-hover: #ac0000;
+}
+
 /* styling for index  */
 
-nav
+/* styles for nav-bar */
+#nav-div {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+nav .logo {
+    height: 65px;
+    object-fit: contain;
+}
+
+.btn {
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn:hover {
+    background-color: var(--accent-hover) !important;
+    color: white !important;
+    box-shadow: none;
+}
+
+
+
+/* styles for hero */
+
+.hero {
+    background-image: url(./images/hero-img.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    height: 75vh;
+    position: relative;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 4;
+    max-width:800px;
+}
+
+.hero-title {
+    text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.custom-input {
+    border: 1px solid #333 !important; 
+    border-radius: 6px;
+}
+
+.custom-input::placeholder {
+    color: #666;
+}
+
+.custom-input:focus {
+    background-color: #050505 !important;
+    border-color: var(--accent-color) !important;
+    color: white !important;
+    outline: none;
+    box-shadow: 0 0 15px rgba(208, 0, 0, 0.4) !important;
+}
+
+@media(max-width:700px) {
+    
+    nav .logo {
+        height: 40px;
+       
+    }
+
+    .my-btn {
+        --bs-btn-padding-y: .25rem;
+        --bs-btn-padding-x: .5rem;
+        --bs-btn-font-size: .90rem;
+    }
+
+    .hero{
+        height: 60vh;
+    }
+
+    .hero-title {
+        font-size: 2.2rem !important;
+    }
+}
