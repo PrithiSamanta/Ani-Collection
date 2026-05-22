@@ -7,7 +7,7 @@
 
 /* styles for nav-bar */
 #nav-div {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -68,10 +68,11 @@ nav .logo {
 .custom-input {
     border: 1px solid #333 !important; 
     border-radius: 6px;
+    padding: 10px;
 }
 
 .custom-input::placeholder {
-    color: #666;
+    color: #959595;
 }
 
 .custom-input:focus {
@@ -79,7 +80,7 @@ nav .logo {
     border-color: var(--accent-color) !important;
     color: white !important;
     outline: none;
-    box-shadow: 0 0 15px rgba(208, 0, 0, 0.4) !important;
+    box-shadow: 0 0px 20px 5px rgba(208, 0, 0, 0.4) !important;
 }
 
 @media(max-width:700px) {
@@ -102,4 +103,108 @@ nav .logo {
     .hero-title {
         font-size: 2.2rem !important;
     }
+}
+
+
+
+/* home.html */
+
+.main{
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.main nav{
+    
+    margin: 0 20px;
+    background-color: transparent;
+    position: relative;  /* Activates z-index positioning */
+    z-index: 10; 
+}
+
+.search-container{
+    position: relative;
+    display: inline-block;
+}
+
+.search-container input {
+  padding-left: 30px; /* Makes room for the icon */
+  font-family: Arial, sans-serif;
+  width: 300px;
+}
+
+.search-container .search-icon {
+  position: absolute;
+  left: 10px;
+  top: 49%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+.top-airing{
+    height: 600px;
+    position: absolute;  /* Pulls container out of document flow */
+    top: 0;              /* Moves it to the very top edge of the screen */
+    left: 0;
+    width: 100%;
+    z-index: 1; 
+    
+}
+
+
+.top-airing::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background-image: linear-gradient(to  right,rgba(0, 0, 0, 0.91),rgba(0, 0, 0, 0.3)) !important;
+}
+
+.top-airing .carousel-item img{
+     width: 100%;
+    height: 600px;       /* Matches the container height */
+    object-fit: cover;
+
+}
+
+
+.top-airing .carousel-item .carousel-caption{
+    position: absolute;
+    z-index: 10;
+    /* top: 0; */
+    left: 2rem;
+    bottom: 20px;
+}
+
+
+.line-clamp {
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;           
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;             /* Overrides Bootstrap's single-line constraint */
+}
+
+.status-div{
+    position: absolute;
+    top: 100px;
+    
+}
+
+.carousel-indicators .active {
+    background-color: var(--accent-color) !important;
+    opacity: 1; /* Keeps it bright and vibrant */
+    
+}
+.carousel-indicators button{
+    background-color: var(--accent-hover) !important;
+    opacity: 0.4; /* Inactive slides will look like a soft, faded red */
+    transition: opacity 0.6s ease;
+    width: 2px;
 }
