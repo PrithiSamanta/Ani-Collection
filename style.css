@@ -16,14 +16,14 @@ nav .logo {
     object-fit: contain;
 }
 
-.btn {
+nav ul li .btn ,.top-airing .btn{
     background-color: var(--accent-color);
     border: none;
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
 }
 
-.btn:hover {
+nav ul li .btn:hover , .top-airing .btn:hover{
     background-color: var(--accent-hover) !important;
     color: white !important;
     box-shadow: none;

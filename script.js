@@ -139,7 +139,7 @@ function spawnLoadingPlaceholders() {
 
 async function getTopRatedAnimes() {
     try {
-        const url = "https://api.jikan.moe/v4/top/anime?limit=8";
+        const url = "https://api.jikan.moe/v4/top/anime?limit=10";
 
         getAnimeCards(url, "#top-container")
     }
@@ -227,3 +227,32 @@ async function getAnimeCards(url, selectContainer) {
         console.log("Can't get top trending animes", err)
     }
 }
+
+function scrollSection(sectionSelector,direction){
+
+    const section = document.querySelector(sectionSelector);
+    if(!section) return;
+
+
+    const scrollAmt = direction==="left" ? -300:300;
+    section.scrollBy({
+        left:scrollAmt,
+        behavior: 'smooth'
+    });
+}
+
+let leftScroll = document.querySelectorAll(".left-scroll");
+
+leftScroll.forEach(button=>{
+    button.addEventListener("click",()=>{
+    const targetSection = button.getAttribute("data-target");
+    scrollSection(targetSection,"left")
+})
+})
+
+document.querySelectorAll(".right-scroll").forEach(button => {
+    button.addEventListener("click", (e) => {
+        const targetContainer = button.getAttribute("data-target");
+        scrollSection(targetContainer, 'right');
+    });
+});
