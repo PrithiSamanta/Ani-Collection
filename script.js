@@ -9,7 +9,10 @@ searchIcon.addEventListener("click", (e) => { //focuses the input when the icon 
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    getCurrentlyAiringAniList();
+    getCurrentlyAiringAniList(); // AniList GraphQL Carousel
+    getTopRatedAnimes();         // Jikan Section 1
+    getAllTimeClassics();        // Jikan Section 2
+    getUpcomingAnimes();         // Jikan Section 3
 });
 
 async function getCurrentlyAiringAniList() {
@@ -76,7 +79,7 @@ async function getCurrentlyAiringAniList() {
                     ? anilistAnime.description.replace(/<\/?[^>]+(>|$)/g, "")
                     : "No description available for this currently airing title.";
 
-                    //add text dynamically
+                //add text dynamically
                 item.innerHTML = `
                 <div class="carousel-binder" mal-id ="${malId}">
                     <img src="${banner}" class="d-block w-100 carousel-banner-img" alt="${title} Banner">
@@ -93,7 +96,7 @@ async function getCurrentlyAiringAniList() {
                     </div>
                     </div>
                 `;
-                
+
             }
         });
 
@@ -102,3 +105,89 @@ async function getCurrentlyAiringAniList() {
     }
 }
 
+
+
+//trending now animes
+
+async function getTopRatedAnimes() {
+    try {
+        const url = "https://api.jikan.moe/v4/top/anime?limit=8";
+
+        getAnimeCards(url, "#top-container")
+    }
+    catch (err) {
+        console.log("Can't get top trending animes", err)
+    }
+}
+
+
+//ALL TIME classic animes
+
+
+async function getAllTimeClassics() {
+    try {
+        const url = "https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8";
+
+        getAnimeCards(url, "#classic-container")
+    }
+    catch (err) {
+        console.log("Can't get top trending animes", err)
+    }
+}
+
+//upcoming animes
+
+async function getUpcomingAnimes() {
+    try {
+        const url = "https://api.jikan.moe/v4/top/anime?filter=upcoming&limit=9";
+
+        getAnimeCards(url, "#upcoming-container");
+    }
+    catch (err) {
+        console.log("Can't get top trending animes", err)
+    }
+}
+
+
+async function getAnimeCards(url, selectContainer) {
+    try {
+
+        const response = await fetch(url);
+
+        const result = await response.json();
+
+        const anime = result.data;
+
+        // const uniqueAnime = [...new Set(anime.mal_id)];
+        const seenIds = new Set();
+        const uniqueAnime = anime.filter(anime => !seenIds.has(anime.mal_id) && seenIds.add(anime.mal_id)); //I DON'T UNDERSTAND this is for unique animelist
+
+
+        const animeContainer = document.querySelector(selectContainer);
+
+
+        uniqueAnime.forEach((e) => {
+            const animeCard = document.createElement("div");
+
+            const animePoster = e.images.jpg.image_url;
+            const animeTitle = e.title_english || e.titles;
+            const score = e.score ? e.score :"NA";
+            const animeEpisodes = e.episodes ? `${e.episodes} eps|` : "";
+            const animeGenre = e.genres[0].name;
+            const animeType = e.type ||"TV";
+
+
+            animeCard.innerHTML = `
+                <div class="img-wrapper"><img src="${animePoster}" alt="${animeTitle}" class="rounded-3"></div>
+                <h5 class="text-white text-truncate pt-2">${animeTitle}</h5>
+                <p class="text-secondary">${animeEpisodes}${animeGenre}|${animeType}</p>
+                <span class=" badge text-warning bg-dark rounded-pill position-absolute top-0 m-2"><i class="bi bi-star-fill pe-1"></i>${score}</span>
+            `;
+            animeCard.classList.add("anime-card", "position-relative");
+            animeContainer.append(animeCard);
+        })
+    }
+    catch (err) {
+        console.log("Can't get top trending animes", err)
+    }
+}

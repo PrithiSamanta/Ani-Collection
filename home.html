@@ -41,11 +41,11 @@
             <div class="top-airing">
 
             
-            <div id="carouselExampleIndicators" class="carousel slide h-100 " data-bs-ride="carouse">
+            <div id="carouselExampleIndicators" class="carousel slide h-100 " data-bs-ride="carousel">
 
                 
                 <div class="carousel-indicators">
-                    <button type="button  " data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
                         class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
                         aria-label="Slide 2"></button>
@@ -95,12 +95,12 @@
 
                     </div>
                 </div>
-                <button class="carousel-control-prev mb-5" type="button" data-bs-target="#carouselExampleIndicators"
+                <button class="carousel-control-prev mb-5 z-2" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon " aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next mb-5" type="button" data-bs-target="#carouselExampleIndicators"
+                <button class="carousel-control-next mb-5 z-2" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
@@ -110,11 +110,27 @@
         </div>
     </div>
 
-    <div class="trending-now">
-        <h3 class="text-white ">Trending Now</h3>
+        <div class="top-rated anime-section container">
+        <h3 class="text-white ps-2 my-1 mx-1">Top Rated</h3>
+        <div class="card-wrapper  d-flex overflow-auto gap-4 py-3 px-1" id="top-container">
+            
+        </div>
+
     </div>
 
+    <div class="all-time-classics anime-section container">
+        <h3 class="text-white ps-2 my-1 mx-1">All-Time Classics</h3>
+        <div class="card-wrapper  d-flex overflow-auto gap-4 py-3 px-1" id="classic-container">
+            
+        </div>
+    </div>
 
+    <div class="anime-section coming-soon container">
+        <h3 class="text-white ps-2 my-1 mx-1">Coming soon</h3>
+        <div class="card-wrapper  d-flex overflow-auto gap-4 py-3 px-1" id="upcoming-container">
+            
+        </div>
+    </div>
 
 
 

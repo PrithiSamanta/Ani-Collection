@@ -33,6 +33,10 @@ nav .logo {
 
 /* styles for hero */
 
+html{
+    scrollbar-color: var(--accent-hover) transparent;
+}
+
 .hero {
     background-image: url(./images/hero-img.jpg);
     background-position: center;
@@ -169,8 +173,10 @@ nav .logo {
     left: 0;
     right: 0;
     z-index: 2;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.91), rgba(0, 0, 0, 0.3)) !important;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.5)) !important;
+    pointer-events: none;
 }
+
 
 .top-airing .carousel-item img {
     width: 100%;
@@ -287,27 +293,118 @@ nav .logo {
     }
 }
 
-@media (max-width: 700px){
-    .carousel-indicators button{
+@media (max-width: 700px) {
+    .carousel-indicators button {
         visibility: hidden;
     }
-    .carousel-item button{
+
+    .carousel-item button {
         font-size: 14px !important;
-        padding: 10px ;
+        padding: 10px;
     }
-    .search-container{
+
+    .search-container {
         display: none;
     }
-    .bottom-nav{
+
+    .bottom-nav {
         display: flex !important;
     }
 }
 
-.bottom-nav{
+.bottom-nav {
     width: calc(100% - 16px);
 
 }
 
-.bottom-nav p{
+.bottom-nav p {
     margin-bottom: 0px !important;
+}
+
+
+
+
+
+
+/* Applies to all 3 main wrapper containers */
+.anime-section {
+    max-width: 96%;
+    margin: 0 auto;
+}
+
+/* Adds the accent indicator line to any section heading */
+.anime-section h3 {
+    border-left: 4px solid var(--accent-color);
+}
+
+/* Hides scrollbars cleanly */
+.anime-section .card-wrapper {
+    scrollbar-width: none;
+}
+
+.card-img-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 3; 
+    overflow: hidden; 
+}
+
+/* Base image styling inside cards */
+.anime-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center; 
+    display: block;
+    filter: brightness(85%);
+    transition: box-shadow 0.3s ease; /* Smooth transition for your hover box-shadow */
+}
+
+/* Card typography adjustments */
+.anime-card h5 {
+    width: 220px;
+    font-size: medium;
+    margin-bottom: 5px !important;
+}
+
+.anime-card p {
+    width: 100%;
+    font-size: small;
+}
+
+
+/* Active structural shifting motion on hover */
+.anime-card {
+    transition: transform 0.3s ease; /*Smooth effect */
+}
+
+.anime-card:hover {
+    transform: translateY(-6px);
+}
+
+/* Glowing red accent outline box-shadow on hover */
+.anime-card:hover img {
+    box-shadow: 0 0px 15px 2px var(--accent-hover) !important;
+}
+
+
+@media(max-width:1200px){
+    .anime-card{
+        width: 200px;
+    }
+}
+@media(max-width:1200px){
+    .anime-card{
+        width: 180px;
+    }
+}
+@media(max-width:768px){
+    .anime-card{
+        width: 150px;
+    }
+}
+@media(max-width:576px){
+    .anime-card{
+        width: 130px;
+    }
 }
