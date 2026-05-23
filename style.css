@@ -33,7 +33,7 @@ nav .logo {
 
 /* styles for hero */
 
-html{
+html {
     scrollbar-color: var(--accent-hover) transparent;
 }
 
@@ -345,20 +345,21 @@ html{
 .img-wrapper {
     position: relative;
     width: 100%;
-    
-    aspect-ratio: 2 / 3; 
-    overflow: hidden; 
+
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
 }
 
 /* Base image styling inside cards */
 .anime-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
-    object-position: center; 
+    object-fit: cover;
+    object-position: center;
     display: block;
     filter: brightness(85%);
-    transition: box-shadow 0.3s ease; /* Smooth transition for your hover box-shadow */
+    transition: box-shadow 0.3s ease;
+    /* Smooth transition for your hover box-shadow */
 }
 
 /* Card typography adjustments */
@@ -376,10 +377,12 @@ html{
 
 /* Active structural shifting motion on hover */
 .anime-card {
-    transition: transform 0.3s ease; /*Smooth effect */
+    transition: transform 0.3s ease;
+    /*Smooth effect */
     width: 220px !important;
     height: 100%;
-    flex-shrink: 0 !important; /*to override bootstrap default value 1*/
+    flex-shrink: 0 !important;
+    /*to override bootstrap default value 1*/
 }
 
 .anime-card:hover {
@@ -393,29 +396,34 @@ html{
 }
 
 
-@media(max-width:1200px){
-    .anime-card{
+@media(max-width:1200px) {
+    .anime-card {
         width: 200px !important;
     }
 }
-@media(max-width:992px){
-    .anime-card{
+
+@media(max-width:992px) {
+    .anime-card {
         width: 180px !important;
     }
 }
-@media(max-width:768px){
-    .anime-card{
+
+@media(max-width:768px) {
+    .anime-card {
         width: 150px !important;
     }
-    .anime-card h5{
+
+    .anime-card h5 {
         font-size: 14px;
     }
-    .anime-card p{
+
+    .anime-card p {
         font-size: 12px;
     }
 }
-@media(max-width:576px){
-    .anime-card{
+
+@media(max-width:576px) {
+    .anime-card {
         width: 140px !important;
     }
 }

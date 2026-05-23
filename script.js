@@ -9,6 +9,7 @@ searchIcon.addEventListener("click", (e) => { //focuses the input when the icon 
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    spawnLoadingPlaceholders();
     getCurrentlyAiringAniList(); // AniList GraphQL Carousel
     getTopRatedAnimes();         // Jikan Section 1
     getAllTimeClassics();        // Jikan Section 2
@@ -107,6 +108,33 @@ async function getCurrentlyAiringAniList() {
 
 
 
+// Helper utility to generate placeholder items dynamically
+function spawnLoadingPlaceholders() {
+    // Find every container on your page that needs a loading state
+    const targets = document.querySelectorAll(".loading-skeleton");
+
+    // This is the clean template for a single animated skeleton component
+    const skeletonTemplate = `
+        <div class="anime-card position-relative placeholder-glow" aria-hidden="true">
+            <div class="img-wrapper bg-dark placeholder" style="aspect-ratio: 2/3; width: 100%;"></div>
+            <div class="card-body pt-2 px-0">
+                <h5 class="placeholder col-10 bg-secondary rounded"></h5>
+                <p class="placeholder col-6 bg-secondary small rounded mb-0"></p>
+            </div>
+        </div>
+    `;
+
+    targets.forEach(container => {
+        // Clear out anything inside the wrapper first
+        container.innerHTML = "";
+
+        // Spawn exactly 6 skeleton columns side-by-side to perfectly fill the horizontal screen space
+        for (let i = 0; i < 7; i++) {
+            container.insertAdjacentHTML("beforeend", skeletonTemplate);
+        }
+    });
+}
+
 //trending now animes
 
 async function getTopRatedAnimes() {
@@ -128,11 +156,11 @@ async function getAllTimeClassics() {
     try {
         const url = "https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8";
 
-        
 
-        setTimeout(()=>{
+
+        setTimeout(() => {
             getAnimeCards(url, "#classic-container")
-        },500);
+        }, 500);
     }
     catch (err) {
         console.log("Can't get top trending animes", err)
@@ -145,10 +173,10 @@ async function getUpcomingAnimes() {
     try {
         const url = "https://api.jikan.moe/v4/top/anime?filter=upcoming&limit=9";
 
-        
-        setTimeout(()=>{
+
+        setTimeout(() => {
             getAnimeCards(url, "#upcoming-container");
-        },1000);
+        }, 1000);
     }
     catch (err) {
         console.log("Can't get top trending animes", err)
@@ -173,15 +201,16 @@ async function getAnimeCards(url, selectContainer) {
         const animeContainer = document.querySelector(selectContainer);
 
 
+        animeContainer.innerHTML = "";
         uniqueAnime.forEach((e) => {
             const animeCard = document.createElement("div");
 
             const animePoster = e.images.jpg.image_url;
             const animeTitle = e.title_english || e.titles;
-            const score = e.score ? e.score :"NA";
+            const score = e.score ? e.score : "NA";
             const animeEpisodes = e.episodes ? `${e.episodes} eps|` : "";
             const animeGenre = e.genres[0].name;
-            const animeType = e.type ||"TV";
+            const animeType = e.type || "TV";
 
 
             animeCard.innerHTML = `
