@@ -342,9 +342,10 @@ html{
     scrollbar-width: none;
 }
 
-.card-img-wrapper {
+.img-wrapper {
     position: relative;
     width: 100%;
+    
     aspect-ratio: 2 / 3; 
     overflow: hidden; 
 }
@@ -362,7 +363,7 @@ html{
 
 /* Card typography adjustments */
 .anime-card h5 {
-    width: 220px;
+    /* width: 220px; */
     font-size: medium;
     margin-bottom: 5px !important;
 }
@@ -376,6 +377,9 @@ html{
 /* Active structural shifting motion on hover */
 .anime-card {
     transition: transform 0.3s ease; /*Smooth effect */
+    width: 220px !important;
+    height: 100%;
+    flex-shrink: 0 !important; /*to override bootstrap default value 1*/
 }
 
 .anime-card:hover {
@@ -383,28 +387,35 @@ html{
 }
 
 /* Glowing red accent outline box-shadow on hover */
-.anime-card:hover img {
+.anime-card:hover .img-wrapper {
     box-shadow: 0 0px 15px 2px var(--accent-hover) !important;
+
 }
 
 
 @media(max-width:1200px){
     .anime-card{
-        width: 200px;
+        width: 200px !important;
     }
 }
-@media(max-width:1200px){
+@media(max-width:992px){
     .anime-card{
-        width: 180px;
+        width: 180px !important;
     }
 }
 @media(max-width:768px){
     .anime-card{
-        width: 150px;
+        width: 150px !important;
+    }
+    .anime-card h5{
+        font-size: 14px;
+    }
+    .anime-card p{
+        font-size: 12px;
     }
 }
 @media(max-width:576px){
     .anime-card{
-        width: 130px;
+        width: 140px !important;
     }
 }

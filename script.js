@@ -128,7 +128,11 @@ async function getAllTimeClassics() {
     try {
         const url = "https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8";
 
-        getAnimeCards(url, "#classic-container")
+        
+
+        setTimeout(()=>{
+            getAnimeCards(url, "#classic-container")
+        },500);
     }
     catch (err) {
         console.log("Can't get top trending animes", err)
@@ -141,7 +145,10 @@ async function getUpcomingAnimes() {
     try {
         const url = "https://api.jikan.moe/v4/top/anime?filter=upcoming&limit=9";
 
-        getAnimeCards(url, "#upcoming-container");
+        
+        setTimeout(()=>{
+            getAnimeCards(url, "#upcoming-container");
+        },1000);
     }
     catch (err) {
         console.log("Can't get top trending animes", err)
@@ -178,7 +185,7 @@ async function getAnimeCards(url, selectContainer) {
 
 
             animeCard.innerHTML = `
-                <div class="img-wrapper"><img src="${animePoster}" alt="${animeTitle}" class="rounded-3"></div>
+                <div class="img-wrapper rounded-3"><img src="${animePoster}" alt="${animeTitle}" class="rounded-3"></div>
                 <h5 class="text-white text-truncate pt-2">${animeTitle}</h5>
                 <p class="text-secondary">${animeEpisodes}${animeGenre}|${animeType}</p>
                 <span class=" badge text-warning bg-dark rounded-pill position-absolute top-0 m-2"><i class="bi bi-star-fill pe-1"></i>${score}</span>
