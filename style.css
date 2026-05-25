@@ -11,26 +11,28 @@
     /* max-width: 1200px; */
     margin: 0 auto;
 }
-nav{
+
+nav {
     position: fixed !important;
     top: 0;
     width: 100%;
-    margin: 0 auto; 
+    margin: 0 auto;
     z-index: 10;
 }
+
 nav .logo {
     height: 65px;
     object-fit: contain;
 }
 
-.btn {
+.my-btn {
     background-color: var(--accent-color);
     border: none;
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
 }
 
-.btn:hover {
+.my-btn:hover {
     background-color: var(--accent-hover) !important;
     color: white !important;
     box-shadow: none;
@@ -112,9 +114,10 @@ html {
 
 .main nav {
 
-    margin: 0 20px;
+    margin: 0 100px 0 30px;
     background-color: transparent;
     position: relative;
+    padding-right: 4.2rem !important;
     /* Activates z-index positioning */
     z-index: 10;
 }
@@ -139,14 +142,16 @@ html {
     color: #aaa;
 }
 
-nav ul li .btn ,.top-airing .btn{
+nav ul li .btn,
+.top-airing .btn {
     background-color: var(--accent-color);
     border: none;
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
 }
 
-nav ul li .btn:hover , .top-airing .btn:hover{
+nav ul li .btn:hover,
+.top-airing .btn:hover {
     background-color: var(--accent-hover) !important;
     color: white !important;
     box-shadow: none;
@@ -333,6 +338,12 @@ nav ul li .btn:hover , .top-airing .btn:hover{
         display: flex !important;
     }
 }
+@media (max-width:576px) {
+    .main nav{
+        margin: 0 5px !important;
+        padding-right: 15px !important;
+    }
+}
 
 .bottom-nav {
     width: calc(100% - 16px);
@@ -405,7 +416,7 @@ nav ul li .btn:hover , .top-airing .btn:hover{
     height: 100%;
     flex-shrink: 0 !important;
     /*to override bootstrap default value 1*/
-    position:  relative !important;
+    position: relative !important;
     z-index: 1;
 }
 
@@ -473,46 +484,53 @@ nav ul li .btn:hover , .top-airing .btn:hover{
 
 /* details.html */
 
-#details-wrapper{
-    margin: 100px auto;
-    max-width: 1400px;
-    height:400px;
+/*  */
+
+#details-wrapper {
+    margin: 40px auto !important; 
+   max-width: 1400px;
+    margin-top: 120px !important;
 }
 
-#image-details img{
-    width: 80%;
-    object-fit: cover;
-    
+#image-details {
+    width: 100%;
+    max-width: 250px;       /* Prevents the poster image from blowing up too huge on big screens */
+    aspect-ratio: 2 / 3;    /* Locks it to a standard vertical anime poster shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
-#image-details{
+
+#image-details img {
+    width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
-#read-more{
+
+#read-more {
     display: -webkit-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
+    line-clamp: 3;
+    -webkit-line-clamp: 3; /* Show 3 clean lines before truncation */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 3.5em;
     position: relative;
 }
-#read-more span{
-    position: absolute;
-    bottom: -10px;
-    z-index: 2;
-}
+
 #read-more.expanded {
-    display: block; /* Turns off the webkit-box engine layout boundaries */
-    line-clamp: none;
-    -webkit-line-clamp: none;
-    max-height: max-content; /* Lets the box breathe and expand fully */
-}
-
-.add-to-list{
-    background-color: var(--accent-color);
+    display: block;
 
 }
-.add-to-list:hover{
-    background-color: var(--accent-hover);
+
+@media (max-width: 768px) {
+    #details-wrapper{
+        margin-top: 70px !important;
+        gap: 20px
+    }
+    .navbar{
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
 }

@@ -49,7 +49,7 @@ async function getAnimeDetails(malId) {
 
         textCont.innerHTML = `
             <h2 class="mb-3 pe-3 text-white">${animeTitleEng}</h2>
-        <p class="py-2 d-flex gap-3"> ${animeRating}
+        <p class="py-2 d-flex gap-3 flex-wrap"> ${animeRating}
             <span class="badge fs-6 text-bg-warning px-2">${animeType}</span><span class="badge fs-6 text-bg-warning px-2">${animeStatus}</span><span class="badge fs-6 text-bg-warning p-1">${animeSeason}</span>
             <span class="badge fs-6 border border-secondary fw-normal text-">${animeEpisodes} episodes</span>
         </p>
@@ -60,7 +60,7 @@ async function getAnimeDetails(malId) {
 </div>
         <p class="d-flex gap-2">${animeGenre}</p>
         <p class="d-flex gap-2">${animeStudio}</p>
-        <a class="btn add-to-list text-white fw-bold" role="button" aria-disabled="true"><i class="bi bi-plus-lg  pe-2 fw-bold"></i>Add to list</a>
+        <a class="my-btn add-to-list text-white fw-bold btn" role="button" aria-disabled="true"><i class="bi bi-plus-lg  pe-2 fw-bold"></i>Add to list</a>
 
         `;
 
@@ -95,6 +95,13 @@ const searchInput = document.querySelector("#searchInput");
 
 searchInput.addEventListener("keypress",(event)=>{
     if(event.key === "Enter"){
-        window.location.href = `search.html?q=${searchInput.value}`;
+        const query = searchInput.value.trim();
+        // if (q==="") return;
+            
+        const params = new URLSearchParams();
+            params.append("q", query); // This converts spaces to "+"
+            
+            //Redirect using the builder's string output
+            window.location.href = `search.html?${params.toString()}`;
     }
-});
+});;

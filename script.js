@@ -7,39 +7,48 @@ let searchInput = document.querySelector("#searchInput");
 
 let searchBtn = document.querySelector("#search-btn");
 
-searchBtn.addEventListener("click",(e)=>{
-    const query = searchInput.value.trim();
-    window.location.href=`search.html?q=${query}`
-});
+if (searchBtn) {
+    searchBtn.addEventListener("click", (e) => {
+        const query = searchInput.value.trim();
+
+        const params = new URLSearchParams();
+            params.append("q", query); // This converts spaces to "+"
+            
+            // Redirect using the builder's string output
+            window.location.href = `search.html?${params.toString()}`;
+
+    });
+}
 
 if (searchInput) {
-    searchInput.addEventListener("keypress", (event) => {
-        if (event.key === "Enter") {
-            const query = searchInput.value.trim();
-            if (query !== "") {
-                window.location.href = `search.html?q=${query}`;
-            }
-        }
-    });
+    searchInput.addEventListener("keypress",(event)=>{
+    if(event.key === "Enter"){
+        const query = searchInput.value.trim();
+        const params = new URLSearchParams();
+            params.append("q", query); // This converts spaces to "+"
+            
+            // Redirect using the builder's string output
+            window.location.href = `search.html?${params.toString()}`;
+    }
+});
 }
 
 if (searchIcon) {
     searchIcon.addEventListener("click", () => {
-        // Your code to handle clicking the search icon goes here
-        console.log("Search icon clicked!");
+        searchInput.focus();
     });
 }
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const isHomePage = document.querySelector(".hero-content") || document.querySelector("#carouselContainer");
-    console.log(isHomePage)
-    if(isHomePage){
+    const isHomePage = document.querySelector(".top-airing") || document.querySelector(".top-rated");
+
+    if (isHomePage) {
         spawnLoadingPlaceholders();
-    getCurrentlyAiringAniList(); // AniList GraphQL Carousel
-    getTopRatedAnimes();         // Jikan Section 1
-    getAllTimeClassics();        // Jikan Section 2
-    getUpcomingAnimes();         // Jikan Section 3
+        getCurrentlyAiringAniList(); // AniList GraphQL Carousel
+        getTopRatedAnimes();         // Jikan Section 1
+        getAllTimeClassics();        // Jikan Section 2
+        getUpcomingAnimes();         // Jikan Section 3
     }
 });
 
@@ -263,7 +272,7 @@ function scrollSection(sectionSelector, direction) {
     const section = document.querySelector(sectionSelector);
     if (!section) return;
 
-    const scrollAmt = direction === "left" ? -1000 : 1000;
+    const scrollAmt = direction === "left" ? -300 : 300;
     section.scrollBy({
         left: scrollAmt,
         behavior: 'smooth'

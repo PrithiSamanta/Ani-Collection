@@ -2,19 +2,32 @@
 
 let searchIcon = document.querySelector(".search-icon");
 let searchInput = document.querySelector("#searchInput");
+let searchInputSm = document.querySelector("#searchInput-sm");
 
 searchIcon.addEventListener("click", (e) => { //focuses the input when the icon is clicked
     searchInput.focus();
 })
 
-// const searchInput = document.querySelector("#searchInput");
-
-searchInput.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-        window.location.href = `search.html?q=${searchInput.value}`;
+searchInput.addEventListener("keypress",(event)=>{
+    if(event.key === "Enter"){
+        const query = searchInput.value.trim();
+        const params = new URLSearchParams();
+            params.append("q", query); // This converts spaces to "+"
+            
+            // Redirect using the builder's string output
+            window.location.href = `search.html?${params.toString()}`;
     }
 });
-
+searchInputSm.addEventListener("keypress",(event)=>{//for smaller devices
+    if(event.key === "Enter"){
+        const query = searchInputSm.value.trim();
+        const params = new URLSearchParams();
+            params.append("q", query); // This converts spaces to "+"
+            
+            // Redirect using the builder's string output
+            window.location.href = `search.html?${params.toString()}`;
+    }
+});
 
 const searchParams = new URLSearchParams(window.location.search);
 
@@ -26,6 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function searchAnime(q) {
     try {
+        if(q===null){
+            return;
+        }
         const url = `https://api.jikan.moe/v4/anime?q=${q}`;
         const response = await fetch(url);
         const result = await response.json();
@@ -38,10 +54,11 @@ async function searchAnime(q) {
 
         let anime = result.data.filter(anime => { 
             return anime.type === "TV" || anime.type === "Movie" || anime.type === "OVA" ||anime.type==="Special" || anime.type==="ONA";
-        });
+        });//filters and only shows watchble like tv movie ova
 
-        anime.sort((a,b)=>a.popularity - b.popularity)
-        //filters and only shows watchble like tv movie ova
+
+        // anime.sort((a,b)=>b.members - a.members);
+        
         console.log(anime);
         const gridContainer = document.querySelector(".grid-container");
 
