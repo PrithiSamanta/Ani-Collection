@@ -1,19 +1,46 @@
 //home.html
 
+
 let searchIcon = document.querySelector(".search-icon");
+
 let searchInput = document.querySelector("#searchInput");
 
-searchIcon.addEventListener("click", (e) => { //focuses the input when the icon is clicked
-    searchInput.focus();
-})
+let searchBtn = document.querySelector("#search-btn");
+
+searchBtn.addEventListener("click",(e)=>{
+    const query = searchInput.value.trim();
+    window.location.href=`search.html?q=${query}`
+});
+
+if (searchInput) {
+    searchInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            const query = searchInput.value.trim();
+            if (query !== "") {
+                window.location.href = `search.html?q=${query}`;
+            }
+        }
+    });
+}
+
+if (searchIcon) {
+    searchIcon.addEventListener("click", () => {
+        // Your code to handle clicking the search icon goes here
+        console.log("Search icon clicked!");
+    });
+}
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    spawnLoadingPlaceholders();
+    const isHomePage = document.querySelector(".hero-content") || document.querySelector("#carouselContainer");
+    console.log(isHomePage)
+    if(isHomePage){
+        spawnLoadingPlaceholders();
     getCurrentlyAiringAniList(); // AniList GraphQL Carousel
     getTopRatedAnimes();         // Jikan Section 1
     getAllTimeClassics();        // Jikan Section 2
     getUpcomingAnimes();         // Jikan Section 3
+    }
 });
 
 async function getCurrentlyAiringAniList() {
@@ -93,7 +120,7 @@ async function getCurrentlyAiringAniList() {
                               <span class="badge badge-meta me-2 bg-dark text-info border border-secondary border-opacity-50">${releaseStatus}</span>
                             </div>
                          <p class="line-clamp" style="max-width: 50%;">${cleanDescription}</p>
-                        <button class="btn text-white btn-lg fs-4 fw-bold"><i class="bi bi-info-circle pe-2"></i>View Details</button>
+                        <button class="btn text-white btn-lg fs-4 fw-bold" mal-id="${malId}" id="view-details"><i class="bi bi-info-circle pe-2"></i>View Details</button>
                     </div>
                     </div>
                 `;
@@ -156,11 +183,8 @@ async function getAllTimeClassics() {
     try {
         const url = "https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8";
 
+        getAnimeCards(url, "#classic-container")
 
-
-        setTimeout(() => {
-            getAnimeCards(url, "#classic-container")
-        }, 500);
     }
     catch (err) {
         console.log("Can't get top trending animes", err)
@@ -173,10 +197,7 @@ async function getUpcomingAnimes() {
     try {
         const url = "https://api.jikan.moe/v4/top/anime?filter=upcoming&limit=9";
 
-
-        setTimeout(() => {
-            getAnimeCards(url, "#upcoming-container");
-        }, 1000);
+        getAnimeCards(url, "#upcoming-container");
     }
     catch (err) {
         console.log("Can't get top trending animes", err)
@@ -188,6 +209,13 @@ async function getAnimeCards(url, selectContainer) {
     try {
 
         const response = await fetch(url);
+
+        if (response.status === 429) {
+            // Pause execution for 2 seconds to let the API breathe
+            await new Promise(resolve => setTimeout(resolve, 2000)); //I DONT UNDERSTAND
+            // Run the function again automatically
+            return getAnimeCards(url, selectContainer);
+        }
 
         const result = await response.json();
 
@@ -205,14 +233,14 @@ async function getAnimeCards(url, selectContainer) {
         uniqueAnime.forEach((e) => {
             const animeCard = document.createElement("div");
 
-            const animePoster = e.images.jpg.image_url;
+            const animePoster = e.images.webp.large_image_url;
             const animeTitle = e.title_english || e.titles;
             const score = e.score ? e.score : "NA";
             const animeEpisodes = e.episodes ? `${e.episodes} eps|` : "";
             const animeGenre = e.genres[0].name;
             const animeType = e.type || "TV";
 
-
+            animeCard.setAttribute("mal-id", e.mal_id)
             animeCard.innerHTML = `
                 <div class="img-wrapper rounded-3"><img src="${animePoster}" alt="${animeTitle}" class="rounded-3"></div>
                 <h5 class="text-white text-truncate pt-2">${animeTitle}</h5>
@@ -228,26 +256,27 @@ async function getAnimeCards(url, selectContainer) {
     }
 }
 
-function scrollSection(sectionSelector,direction){
+
+//section scroll
+function scrollSection(sectionSelector, direction) {
 
     const section = document.querySelector(sectionSelector);
-    if(!section) return;
+    if (!section) return;
 
-
-    const scrollAmt = direction==="left" ? -300:300;
+    const scrollAmt = direction === "left" ? -1000 : 1000;
     section.scrollBy({
-        left:scrollAmt,
+        left: scrollAmt,
         behavior: 'smooth'
     });
 }
 
 let leftScroll = document.querySelectorAll(".left-scroll");
 
-leftScroll.forEach(button=>{
-    button.addEventListener("click",()=>{
-    const targetSection = button.getAttribute("data-target");
-    scrollSection(targetSection,"left")
-})
+leftScroll.forEach(button => {
+    button.addEventListener("click", () => {
+        const targetSection = button.getAttribute("data-target");
+        scrollSection(targetSection, "left")
+    })
 })
 
 document.querySelectorAll(".right-scroll").forEach(button => {
@@ -256,3 +285,108 @@ document.querySelectorAll(".right-scroll").forEach(button => {
         scrollSection(targetContainer, 'right');
     });
 });
+
+
+
+//mouse over anime details
+
+// 1. Listen globally on the body element so dynamic items are caught perfectly
+// document.body.addEventListener("mouseover", async (event) => {
+//     // Look up the DOM tree to see if the user hovered over an anime card
+//     const animeCard = event.target.closest(".anime-card");
+
+//     // If they didn't hover over a card, ignore it and stop
+//     if (!animeCard) return;
+
+//     // Grab the ID attribute securely using dataset tools
+//     const malId = animeCard.getAttribute("mal-id");
+//     if (!malId) return;
+
+//     // Avoid making multiple duplicate boxes if one is already open on this card
+//     if (animeCard.querySelector(".details-div")) return;
+
+//     // Create the loading structural box wrapper
+//     let detailDiv = document.createElement("div");
+//     detailDiv.classList.add("details-div");
+//     detailDiv.innerHTML = `<p class="text-secondary small p-2 m-0">Loading info...</p>`;
+//     animeCard.append(detailDiv);
+
+//     try {
+//         // FIX: Added 'await' here so the compiler pauses for your API result!
+//         const animeDetails = await getAnimeById(malId);
+//         if (!animeDetails) return;
+
+//         console.log("Fetched Hover Details:", animeDetails);
+
+//         const animeTitleEng = animeDetails.title_english || animeDetails.title || "Unknown";
+//         const animeTitle = animeDetails.title_japanese || "";
+//         const animeDesp = animeDetails.synopsis ? animeDetails.synopsis : "No summary provided.";
+
+//         // Inject the rich text templates securely
+//         detailDiv.innerHTML = `
+//             <h6 class="text-warning fw-bold mb-1 text-truncate">${animeTitleEng}</h6>
+//             <small class="text-muted d-block mb-2">${animeTitle}</small>
+//             <p class="small text-light line-clamp-3 mb-0" style="font-size: 11px;">${animeDesp}</p>
+//         `;
+//     }
+//     catch (err) {
+//         console.log("Can't render hover details state layout:", err);
+//         detailDiv.remove(); // Clean up if things hit a rate-limiting wall
+//     }
+// });
+
+// // 2. Clean up and remove the hover box when the mouse leaves the card element area
+// document.body.addEventListener("mouseout", (event) => {
+//     const animeCard = event.target.closest(".anime-card");
+//     if (!animeCard) return;
+
+//     const details = animeCard.querySelector(".details-div");
+//     if (details) {
+//         details.remove();
+//     }
+// });
+
+
+// async function getAnimeById(id) {
+//     try {
+//         // FIX: Converted to a dynamic Template Literal using variables backticks
+//         const url = `https://api.jikan.moe/v4/anime/${id}`;
+//         const response = await fetch(url);
+
+//         if (response.status === 429) {
+//             console.warn("Hover API Rate limited! Waiting 1 second...");
+//             await new Promise(resolve => setTimeout(resolve, 1000));
+//             return getAnimeById(id); // Retry safely
+//         }
+
+//         const result = await response.json();
+//         return result.data;  
+//     } catch(err) {
+//         console.log("Error: Can't get anime by id parameters:", err);
+//         return null;
+//     }
+// }
+
+document.body.addEventListener(("click"), async (event) => {
+    try {
+        const animeCard = event.target.closest(".anime-card");
+        const viewDetails = event.target.closest("#view-details");
+
+        // if (!animeCard || !viewDetails) return;
+
+        if (animeCard) {
+            window.location.href = `details.html?mal_id=${animeCard.getAttribute("mal-id")}`;
+            console.log(animeCard)
+        }
+        else if (viewDetails) {
+            window.location.href = `details.html?mal_id=${viewDetails.getAttribute("mal-id")}`;
+        }
+        else {
+            return;
+        }
+    }
+    catch (err) {
+        console.log("Can't get details", err);
+    }
+})
+
