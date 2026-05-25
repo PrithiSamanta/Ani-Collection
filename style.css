@@ -17,7 +17,7 @@ nav {
     top: 0;
     width: 100%;
     margin: 0 auto;
-    z-index: 10;
+    z-index: 1000 !important;
 }
 
 nav .logo {
@@ -533,4 +533,12 @@ nav ul li .btn:hover,
         padding-left: 10px !important;
         padding-right: 10px !important;
     }
+}
+
+
+/* sign in sign up */
+
+.modal-content{
+    border: 1px ridge var(--accent-hover) !important;
+    box-shadow: 0 0px 20px 5px rgba(208, 0, 0, 0.4) !important;
 }

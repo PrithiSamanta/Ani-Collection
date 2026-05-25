@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function searchAnime(q) {
     try {
-        if(q===null){
+        if(q==="" || q===null){
             return;
         }
         const url = `https://api.jikan.moe/v4/anime?q=${q}`;

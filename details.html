@@ -9,7 +9,7 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
-    
+
     <link rel="shortcut icon" href="./images/favicon(1).ico" type="image/x-icon">
 </head>
 
@@ -30,27 +30,28 @@
         </div>
         <div>
             <ul class="navbar-nav  mb-lg-0 d-flex gap-3 ms-auto flex-row">
-                <li><button type="button" class="btn text-white  my-btn">Sign In</button></li>
+                <li><button type="button" class="btn text-white  my-btn" data-bs-toggle="modal"
+                            data-bs-target="#signInModal">Sign In</button></li>
             </ul>
         </div>
     </nav>
 
 
-<div id="details-wrapper" class="row justify-content-center align-items-start placeholder-glow " >
-    
-    <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center">
-        <div id="image-details" class="placeholder bg-secondary rounded-3 w-100">
-            </div>
-    </div>
-    
-    <div id="text-details" class="col-12 col-md-8 col-lg-9">
-        <h2 class="placeholder col-6 bg-secondary rounded mb-3 py-3"></h2>
-        <p class="placeholder col-12 bg-secondary rounded py-2"></p>
-        <p class="placeholder col-12 bg-secondary rounded py-2"></p>
-        <p class="placeholder col-9 bg-secondary rounded py-2"></p>
-    </div>
+    <div id="details-wrapper" class="row justify-content-center align-items-start placeholder-glow ">
 
-</div>
+        <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center">
+            <div id="image-details" class="placeholder bg-secondary rounded-3 w-100">
+            </div>
+        </div>
+
+        <div id="text-details" class="col-12 col-md-8 col-lg-9">
+            <h2 class="placeholder col-6 bg-secondary rounded mb-3 py-3"></h2>
+            <p class="placeholder col-12 bg-secondary rounded py-2"></p>
+            <p class="placeholder col-12 bg-secondary rounded py-2"></p>
+            <p class="placeholder col-9 bg-secondary rounded py-2"></p>
+        </div>
+
+    </div>
 
 
 
@@ -74,7 +75,73 @@
     </div>
 
 
+    <div class="modal fade text-white" id="signUpModal" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-black">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold fs-4 ">Create an Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="signUpForm">
+                        <div class="mb-3">
+                            <label class="form-label">Email address</label>
+                            <input type="email" id="signUpEmail" class="form-control custom-input bg-black"
+                                placeholder="name@example.com" required autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" id="signUpPassword" class="form-control custom-input bg-black"
+                                placeholder="At least 6 characters" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" id="confirmPassword" class="form-control custom-input bg-black"
+                                placeholder="Confirm Password" required autocomplete="new-password">
+                        </div>
+                        <button type="submit" class="btn my-btn  w-100 py-2 mt-2 ">Sign Up</button>
+                    </form>
+                </div>
+                <p class="ms-3 text-secondary">Already have an account ? <a href="" class="opacity-75"
+                        data-bs-toggle="modal" data-bs-target="#signInModal" style="color: var(--accent-color);">Sign
+                        in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-white" id="signInModal" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-black border-secondary">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold fs-4">Login back to your account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="signInForm">
+                        <div class="mb-3">
+                            <label class="form-label">Email address</label>
+                            <input type="email" id="signInEmail" class="form-control bg-black custom-input"
+                                placeholder="name@example.com" required autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" id="signInPassword" class="form-control bg-black custom-input"
+                                placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="btn btn-light w-100 py-2 mt-2 my-btn text-white">Sign in</button>
+                    </form>
+                </div>
+                <p class="ms-3 text-secondary">Don't have an account ? <a href="" data-bs-toggle="modal"
+                        class="opacity-75" data-bs-target="#signUpModal" style="color: var(--accent-color);">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="details.js"></script>
+    <script src="global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
