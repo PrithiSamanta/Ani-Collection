@@ -129,7 +129,7 @@ async function getCurrentlyAiringAniList() {
                               <span class="badge badge-meta me-2 bg-dark text-info border border-secondary border-opacity-50">${releaseStatus}</span>
                             </div>
                          <p class="line-clamp" style="max-width: 50%;">${cleanDescription}</p>
-                        <button class="btn text-white btn-lg fs-4 fw-bold" mal-id="${malId}" id="view-details"><i class="bi bi-info-circle pe-2"></i>View Details</button>
+                        <button class="btn text-white btn-lg fs-4 fw-bold my-btn" mal-id="${malId}" id="view-details"><i class="bi bi-info-circle pe-2"></i>View Details</button>
                     </div>
                     </div>
                 `;

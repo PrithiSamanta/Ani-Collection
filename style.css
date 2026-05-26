@@ -142,19 +142,15 @@ html {
     color: #aaa;
 }
 
-nav ul li .btn,
-.top-airing .btn {
-    background-color: var(--accent-color);
-    border: none;
-    border-radius: 6px;
-    transition: background-color 0.2s ease-in-out;
+/* Removes the dropdown arrow from the profile icon */
+.no-caret::after {
+    display: none !important;
 }
 
-nav ul li .btn:hover,
-.top-airing .btn:hover {
-    background-color: var(--accent-hover) !important;
-    color: white !important;
-    box-shadow: none;
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #4a4a4a !important; 
+
 }
 
 .custom-input {
