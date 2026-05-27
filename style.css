@@ -172,7 +172,7 @@ html {
 }
 
 .top-airing {
-    height: 600px;
+    height: 650px;
     position: absolute;
     /* Pulls container out of document flow */
     top: -81px;
@@ -185,7 +185,7 @@ html {
 
 .top-airing-wrapper {
     position: relative;
-    height: 550px;
+    height: 600px;
 }
 
 .top-airing::before {
@@ -196,14 +196,14 @@ html {
     left: 0;
     right: 0;
     z-index: 2;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.5)) !important;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.55)) !important;
     pointer-events: none;
 }
 
 
 .top-airing .carousel-item img {
     width: 100%;
-    height: 600px;
+    height: 650px;
     /* Matches the container height */
     object-fit: cover;
 

@@ -60,7 +60,7 @@ async function getAnimeDetails(malId) {
 </div>
         <p class="d-flex gap-2">${animeGenre}</p>
         <p class="d-flex gap-2">${animeStudio}</p>
-        <a class="my-btn add-to-list text-white fw-bold btn" role="button" aria-disabled="true"><i class="bi bi-plus-lg  pe-2 fw-bold"></i>Add to list</a>
+        <button class="my-btn add-to-list text-white fw-bold btn" role="button"  id="addToListBtn" onclick="handleWatchlistButtonClick(event)" aria-disabled="true"><i class="bi bi-plus-lg  pe-2 fw-bold"></i>Add to list</button>
 
         `;
 
@@ -105,3 +105,5 @@ searchInput.addEventListener("keypress",(event)=>{
             window.location.href = `search.html?${params.toString()}`;
     }
 });;
+
+

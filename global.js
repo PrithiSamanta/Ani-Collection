@@ -7,7 +7,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // Ensure your supabase client is running at the top of the file!
 // const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-document.addEventListener("DOMContentLoaded", async(e) => {
+document.addEventListener("DOMContentLoaded", async (e) => {
 
     await managerNavBarState();
 
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async(e) => {
 
             if (password !== confirmPassword) {
                 const msg = document.createElement("p");
-                msg.className = "password-error-msg text-danger small mt-2"; 
+                msg.className = "password-error-msg text-danger small mt-2";
                 msg.innerHTML = "Confirm password should be the same as password";
 
                 // Append the error message text under the confirm password box layout
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async(e) => {
             }
 
             // If passwords match, proceed safely to register!
-            await signUp(email, password,username);
+            await signUp(email, password, username);
         });
 
     }
@@ -55,7 +55,61 @@ document.addEventListener("DOMContentLoaded", async(e) => {
             await signIn(email, password);
         });
     }
+
+
+    const addToListBtn = document.querySelector("#addToListBtn");
+    if (addToListBtn) {
+        addToListBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            e.stopPropagation()
+
+            // const { data: { user }, error } = await supabaseClient.auth.getUser();
+
+            // if (!user) {
+            //     alert("You must be signed in to add anime to watchlist");
+            //     // const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
+            //     // signInModal.show();
+            //     return;
+            // }
+
+            // const animeTitle = document.querySelector("#text-details h2").textContent;
+            // document.querySelector("#anime-title-modal").textContent = animeTitle;
+
+            // const addToListModal = new bootstrap.Modal(document.getElementById('addToListModal'));
+            // addToListModal.show();
+            // console.log("hello")
+            // try {
+            //     // Fetch the user session safely
+            //     const { data: { user }, error } = await supabaseClient.auth.getUser();
+
+            //     if (error) {
+            //         console.error("Supabase returned an authentication error:", error.message);
+            //     }
+
+
+            //     if (!user) {
+            //         alert("You must be signed in to add anime to watchlist");
+            //         return;
+            //     }
+
+            //     // If user exists, your layout title changes next
+            //     const animeTitle = document.querySelector("#text-details h2").textContent;
+            //     document.querySelector("#anime-title-modal").textContent = animeTitle;
+
+            //     const addToListModal = new window.bootstrap.Modal(document.getElementById('addToListModal'));
+            //     addToListModal.show();
+
+            // } catch (crashError) {
+            //     //  If Supabase fails or your variables are misconfigured, this will capture it!
+            //     console.error("The script crashed mid-execution. Reason:", crashError);
+            //     alert("Something went wrong behind the scenes while verifying your session.");
+            // }
+        });
+    }
+
+
 });
+
 
 async function signIn(email, password) {
     const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -71,7 +125,7 @@ async function signIn(email, password) {
     }
 }
 
-async function signUp(email, password,username) {
+async function signUp(email, password, username) {
 
 
     const automaticAvatarUrl = `https://api.dicebear.com/7.x/initials/svg`;
@@ -81,7 +135,7 @@ async function signUp(email, password,username) {
         email: email,
         password: password,
         options: {
-            
+
             data: {
                 username: username,
                 avatar_url: automaticAvatarUrl
@@ -100,15 +154,15 @@ async function signUp(email, password,username) {
 async function managerNavBarState() {
     const authContainer = document.querySelector("#nav-auth-container");
 
-    if(!authContainer) return;
+    if (!authContainer) return;
 
     const { data: { user }, error } = await supabaseClient.auth.getUser();//asks supabase if user is logged in
 
-    if(user){
+    if (user) {
         const displayName = user.user_metadata?.username || "User";
         const avatarImg = user.user_metadata?.avatar_url || "https://api.dicebear.com/7.x/initials/svg?seed=Anime";
 
-        authContainer.innerHTML=`
+        authContainer.innerHTML = `
         <div class="dropdown">
                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle no-caret" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="${avatarImg}" alt="${displayName}" width="38" height="38" class="rounded-circle border border-danger">
@@ -135,3 +189,44 @@ async function managerNavBarState() {
         }
     }
 }
+
+
+
+//add to list
+
+// this function directly to the window so the HTML can always see it
+window.handleWatchlistButtonClick = async function(event) {
+    event.preventDefault();
+
+
+    try {
+        // 2. Talk to Supabase
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
+
+        if (error) {
+            console.error("Supabase Session Error:", error.message);
+        }
+
+        // 3. Check authentication status
+        if (!user) {
+            alert("You must be signed in to add anime to your watchlist!");
+            
+            const signInModalElement = document.getElementById('signInModal');
+            const signInModal = new window.bootstrap.Modal(signInModalElement);
+            signInModal.show();
+            return;
+        }
+
+        // 4. If logged in, grab title and open configuration layout
+        const animeTitle = document.querySelector("#text-details h2").textContent;
+        document.querySelector("#anime-title-modal").textContent = `Anime Name : ${animeTitle}`;
+
+        const addToListModalElement = document.getElementById('addToListModal');
+        const addToListModal = new bootstrap.Modal(addToListModalElement);
+        addToListModal.show();
+
+    } catch (crashError) {
+        console.error("Critical execution crash:", crashError);
+        alert("The authentication thread crashed. Check console.");
+    }
+};

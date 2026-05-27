@@ -63,7 +63,8 @@ async function searchAnime(q) {
         const gridContainer = document.querySelector(".grid-container");
 
         const searchHead = document.querySelector("h2");
-        searchHead.textContent = `Search results for : ${q}`
+        searchHead.textContent = `Search results for : ${q}`;
+        document.title = `Search results for : ${q}`;
         gridContainer.innerHTML = "";
         anime.forEach((e) => {
             const animeCard = document.createElement("div");
@@ -86,7 +87,7 @@ async function searchAnime(q) {
             `;
             animeCard.classList.add("anime-card", "position-relative");
             gridContainer.append(animeCard);
-        })
+        });
 
     }
     catch (err) {

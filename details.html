@@ -30,10 +30,10 @@
         </div>
         <div id="nav-auth-container">
 
-                <button type="button" class="btn text-white  my-btn" data-bs-toggle="modal"
-                    data-bs-target="#signInModal">Sign In</button>
+            <button type="button" class="btn text-white  my-btn" data-bs-toggle="modal"
+                data-bs-target="#signInModal">Sign In</button>
 
-            </div>
+        </div>
     </nav>
 
 
@@ -83,7 +83,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="signUpForm">
+                    <form id="signUpForm" autocomplete="off">
                         <div class="mb-3">
                             <label class="form-label">Email address</label>
                             <input type="email" id="signUpEmail" class="form-control custom-input bg-black"
@@ -118,7 +118,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="signInForm">
+                    <form id="signInForm" autocomplete="off">
                         <div class="mb-3">
                             <label class="form-label">Email address</label>
                             <input type="email" id="signInEmail" class="form-control bg-black custom-input"
@@ -139,9 +139,47 @@
         </div>
     </div>
 
+
+    <div class="modal fade text-white" id="addToListModal" tabindex="-1" data-bs-theme="dark" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content bg-black">
+                <div class="modal-header text-light border-0">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Anime to Watchlist</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="anime-title-modal">Anime Title</p>
+                    <form action="">
+                        <div class="mb-3 row align-items-center g-3">
+                            <label for="" class="col-4">Select status : </label>
+                            <select class="form-select-sm custom-input col" aria-label="Default select example">
+                                <option selected disabled>Select status</option>
+                                <option value="1">Watching</option>
+                                <option value="2">Watched</option>
+                                <option value="3">Plan to watch</option>
+                                <option value="4">Dropped</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 row align-items-center g-3">
+                            <label for="rate" class="col-4">Rate : </label>
+                            <input type="number" name="" id="rate" min="1" max="10" class="custom-input col form-control-sm" placeholder="Rate between 1 and 10">
+                        </div>
+                        <div class="mb-3 row align-items-center g-3">
+                            <label for="ep-watched" class="col-4">Eps Watched :</label>
+                            <input type="number" name="" id="ep-watched" min="" max="" class="custom-input col form-control-sm" >
+                        </div>
+                        <button type="submit" class="btn my-btn ms-auto d-block">Add</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="details.js"></script>
     <script src="global.js"></script>
+    <script src="details.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
