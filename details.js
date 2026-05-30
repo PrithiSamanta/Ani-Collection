@@ -2,10 +2,63 @@
 const searchParams = new URLSearchParams(window.location.search);
 
 const malId = searchParams.get("mal_id");
+let currentAnime = null;
+window.currentAnime = null; // expose globally for use in global.js
 
 
 document.addEventListener("DOMContentLoaded", () => {
     getAnimeDetails(malId);
+
+    const addToListForm = document.querySelector("#addToListForm");
+    if (addToListForm) {
+        addToListForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!currentAnime) {
+                alert("Anime details are still loading. Please wait.");
+                return;
+            }
+
+            const status = document.querySelector("#statusSelect").value;
+            const scoreVal = document.querySelector("#rateInput").value;
+            const epWatchedVal = document.querySelector("#epWatchedInput").value;
+
+            const score = scoreVal ? parseInt(scoreVal) : null;
+            const episodes_watched = epWatchedVal ? parseInt(epWatchedVal) : 0;
+
+            try {
+                const { data: { user }, error } = await supabaseClient.auth.getUser();
+                if (error || !user) {
+                    alert("You must be logged in to save anime to your watchlist.");
+                    return;
+                }
+
+                const item = {
+                    mal_id: currentAnime.mal_id,
+                    title: currentAnime.title,
+                    image_url: currentAnime.image_url,
+                    status: status,
+                    score: score,
+                    episodes_watched: episodes_watched,
+                    total_episodes: currentAnime.total_episodes
+                };
+
+                await window.saveWatchlistItem(user.id, item);
+
+                // Hide Modal
+                const addToListModalElement = document.getElementById('addToListModal');
+                const modalInstance = bootstrap.Modal.getInstance(addToListModalElement);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+
+                alert("Watchlist updated successfully!");
+            } catch (err) {
+                console.error("Error updating watchlist:", err);
+                alert("Failed to update watchlist: " + err.message);
+            }
+        });
+    }
 })
 
 async function getAnimeDetails(malId) {
@@ -28,6 +81,14 @@ async function getAnimeDetails(malId) {
         const animeType = anime.type;
         const animeEpisodes = anime.episodes || "TBA";
         const animeStatus = anime.status;
+
+        currentAnime = {
+            mal_id: anime.mal_id,
+            title: animeTitleEng,
+            image_url: animeImg,
+            total_episodes: anime.episodes || 0
+        };
+        window.currentAnime = currentAnime; // keep global reference in sync
         const animeScore = anime.score || "";
         const animeScoredBy = anime.scored_by || "";
         const animeRating = animeScore && animeScoredBy ? `<span class="badge fs-6 text-bg-warning px-2"><i class="bi bi-star-fill"></i> ${animeScore} <span style="font-size:14px">(${animeScoredBy})</span></span>` : "";

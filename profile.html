@@ -1,18 +1,365 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="./images/favicon(1).ico" type="image/x-icon">
-  </head>
-  <body>
-    
 
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ani Collection - My Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="./images/favicon(1).ico" type="image/x-icon">
+</head>
+
+<body class="bg-black">
+  <!-- Navbar -->
+  <nav class="navbar d-flex justify-content-between align-items-center px-4 fixed-top">
+    <div>
+      <a href="home.html">
+        <img src="./images/logo.png" alt="" class="logo">
+      </a>
+    </div>
+    <div>
+      <div class="search-container">
+        <i class="bi bi-search search-icon"></i>
+        <input type="search" placeholder="Search Anime.." class="custom-input bg-black text-light form-control"
+          id="searchInput" autocomplete="off">
+      </div>
+    </div>
+    <div id="nav-auth-container">
+      <button type="button" class="btn text-white my-btn" data-bs-toggle="modal" data-bs-target="#signInModal">Sign
+        In</button>
+    </div>
+  </nav>
+
+  <!-- Mobile Search bar visible on small screens -->
+  <div class="search-container-sm d-none mt-5 pt-3 px-3">
+    <div class="position-relative">
+      <i class="bi bi-search search-icon position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"></i>
+      <input type="search" placeholder="Search Anime.." class="custom-input bg-black text-light form-control ps-5"
+        id="searchInput-sm" autocomplete="off">
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="profile-container text-white">
+    <!-- Loading State -->
+    <div id="profile-loading" class="text-center py-5">
+      <div class="spinner-border text-danger" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3 text-secondary">Loading Otaku Profile...</p>
+    </div>
+
+    <!-- Access Denied State (Not logged in) -->
+    <div id="profile-restricted" class="d-none row justify-content-center">
+      <div class="col-md-6">
+        <div class="profile-card profile-card-glowing p-5 text-center my-5">
+          <i class="bi bi-shield-lock-fill text-danger mb-4" style="font-size: 60px;"></i>
+          <h2 class="fw-bold mb-3">Otaku Area Restricted</h2>
+          <p class="text-secondary mb-4">Please log in to view your anime collections, track your episodes progress, and
+            customize your profile.</p>
+          <button type="button" class="btn my-btn text-white px-4 py-2" data-bs-toggle="modal"
+            data-bs-target="#signInModal">Sign In / Register</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Profile Dashboard (Logged in) -->
+    <div id="profile-dashboard" class="d-none">
+      <div class="row g-4">
+        <!-- Left Column: User details -->
+        <div class="col-lg-4">
+          <div class="profile-card p-4 text-center h-100">
+            <div class="avatar-container mb-3">
+              <img id="user-avatar" src="https://api.dicebear.com/7.x/initials/svg?seed=Anime" alt="Avatar">
+              <div class="avatar-overlay" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <i class="bi bi-pencil-square fs-5 mb-1"></i>
+                <span>Change Avatar</span>
+              </div>
+            </div>
+            <h4 id="user-name" class="fw-bold mb-1">Otaku Name</h4>
+            <p id="user-rank"
+              class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25 px-3 py-2 rounded-pill small mb-3">
+              Level 1: Novice</p>
+            <p id="user-email" class="text-secondary mb-4 text-truncate">email@example.com</p>
+
+            <hr class="border-secondary my-3 opacity-25">
+
+            <button class="btn btn-outline-light btn-sm w-100 py-2 border-secondary" data-bs-toggle="modal"
+              data-bs-target="#editProfileModal">
+              <i class="bi bi-gear-fill me-2"></i>Edit Profile
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Stats -->
+        <div class="col-lg-8">
+          <div class="profile-card p-4 h-100">
+            <h4 class="fw-bold mb-4 pb-2 border-bottom border-secondary border-opacity-25">Otaku Statistics</h4>
+            <div class="row g-3">
+              <div class="col-6 col-sm-3">
+                <div class="stat-card">
+                  <i class="bi bi-collection-play"></i>
+                  <h3 id="stat-total">0</h3>
+                  <p>Total Anime</p>
+                </div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="stat-card">
+                  <i class="bi bi-play-circle"></i>
+                  <h3 id="stat-episodes">0</h3>
+                  <p>Episodes</p>
+                </div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="stat-card">
+                  <i class="bi bi-star-fill text-warning"></i>
+                  <h3 id="stat-avg-score">N/A</h3>
+                  <p>Avg Rating</p>
+                </div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="stat-card">
+                  <i class="bi bi-clock-history"></i>
+                  <h3 id="stat-watchtime">0h</h3>
+                  <p>Watch Time</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Watchlist Area -->
+      <div class="profile-card p-4 mt-5 mb-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <h4 class="fw-bold m-0"><i class="bi bi-list-stars text-danger me-2"></i>My Watchlist</h4>
+
+          <!-- Filter Search & Sort Controls -->
+          <div class="d-flex gap-3 align-items-center flex-wrap col-12 col-md-auto">
+            <div class="search-container col-12 col-sm-auto mb-0">
+              <i class="bi bi-search search-icon"></i>
+              <input type="text" id="watchlist-search" placeholder="Filter by title..."
+                class="custom-input bg-black text-light form-control form-control-sm">
+            </div>
+            <select id="watchlist-sort"
+              class="form-select form-select-sm custom-input bg-black text-light border-secondary border-opacity-50"
+              style="width: 150px;">
+              <option value="updated">Last Updated</option>
+              <option value="title">Title (A-Z)</option>
+              <option value="score">User Score</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs for Statuses -->
+        <ul class="nav profile-nav-tabs mb-4" id="watchlistTabs" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" id="tab-all" data-status="All">All <span class="badge bg-secondary ms-1"
+                id="count-all">0</span></button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="tab-watching" data-status="Watching">Watching <span
+                class="badge bg-success ms-1" id="count-watching">0</span></button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="tab-watched" data-status="Watched">Completed <span
+                class="badge bg-primary ms-1" id="count-watched">0</span></button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="tab-plan" data-status="Plan to Watch">Plan to Watch <span
+                class="badge bg-warning text-dark ms-1" id="count-plan">0</span></button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="tab-dropped" data-status="Dropped">Dropped <span class="badge bg-danger ms-1"
+                id="count-dropped">0</span></button>
+          </li>
+        </ul>
+
+        <!-- Watchlist Cards Grid -->
+        <div id="watchlist-container" class="watchlist-grid">
+          <!-- JS will dynamically inject items here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="watchlist-empty" class="text-center py-5 d-none">
+          <i class="bi bi-clipboard-x text-secondary mb-3" style="font-size: 40px;"></i>
+          <p class="text-secondary mb-3">No anime found in this category.</p>
+          <a href="home.html" class="btn my-btn text-white btn-sm px-4 py-2">Browse Anime</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <div
+    class="bottom-nav d-flex justify-content-between align-items-center px-3 py-1 m-2 position-fixed bottom-0 bg-black rounded-3 d-none z-2">
+    <a href="home.html"
+      class="home text-decoration-none text-white d-flex justify-content-between align-items-center flex-column">
+      <i class="bi bi-house-fill "></i>
+      <p>Home</p>
+    </a>
+    <a href="search.html"
+      class="search text-decoration-none text-white d-flex justify-content-between align-items-center flex-column">
+      <i class="bi bi-search"></i>
+      <p>Search</p>
+    </a>
+    <a href="profile.html"
+      class="profile text-decoration-none text-white d-flex justify-content-between align-items-center flex-column">
+      <i class="bi bi-person-circle"></i>
+      <p>Profile</p>
+    </a>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div class="modal fade text-white" id="signUpModal" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-black">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold fs-4">Create an Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="signUpForm">
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" id="signUpUsername" class="form-control custom-input bg-black"
+                placeholder="Choose an Otaku name" required autocomplete="off">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email address</label>
+              <input type="email" id="signUpEmail" class="form-control custom-input bg-black"
+                placeholder="name@example.com" required autocomplete="off">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" id="signUpPassword" class="form-control custom-input bg-black"
+                placeholder="At least 6 characters" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Confirm Password</label>
+              <input type="password" id="confirmPassword" class="form-control custom-input bg-black"
+                placeholder="Confirm Password" required autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn my-btn w-100 py-2 mt-2">Sign Up</button>
+          </form>
+        </div>
+        <p class="ms-3 text-secondary">Already have an account ? <a href="" class="opacity-75" data-bs-toggle="modal"
+            data-bs-target="#signInModal" style="color: var(--accent-color);">Sign in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign In Modal -->
+  <div class="modal fade text-white" id="signInModal" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-black border-secondary">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold fs-4">Login back to your account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="signInForm">
+            <div class="mb-3">
+              <label class="form-label">Email address</label>
+              <input type="email" id="signInEmail" class="form-control bg-black custom-input"
+                placeholder="name@example.com" required autocomplete="off">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" id="signInPassword" class="form-control bg-black custom-input"
+                placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-light w-100 py-2 mt-2 my-btn text-white">Sign in</button>
+          </form>
+        </div>
+        <p class="ms-3 text-secondary">Don't have an account ? <a href="" data-bs-toggle="modal" class="opacity-75"
+            data-bs-target="#signUpModal" style="color: var(--accent-color);">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal fade text-white" id="editProfileModal" tabindex="-1" data-bs-theme="dark" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-black">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold fs-4">Edit Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProfileForm">
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Username</label>
+              <div class="input-group gap-2">
+                <input type="text" id="editUsername" class="form-control custom-input bg-black text-white" required style="flex: 1;">
+                <button type="button" id="randomizeUsername" class="btn btn-outline-danger btn-sm px-3">
+                  <i class="bi bi-shuffle me-1"></i>Random Name
+                </button>
+              </div>
+            </div>
+            
+            <div class="text-center mb-4">
+              <p class="small text-secondary mb-2">Avatar Icon Preview</p>
+              <img id="avatar-preview" src="https://api.dicebear.com/7.x/initials/svg?seed=Anime"
+                class="rounded-circle border border-danger" width="90" height="90">
+            </div>
+            <button type="submit" class="btn my-btn w-100 py-2 text-white">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Watchlist Item Modal -->
+  <div class="modal fade text-white" id="editWatchlistModal" tabindex="-1" data-bs-theme="dark" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-black">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold fs-4">Edit Watchlist Entry</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5 id="edit-modal-anime-title" class="fw-bold mb-4 text-warning"></h5>
+          <form id="editWatchlistForm">
+            <input type="hidden" id="editItemMalId">
+            <div class="mb-3 row align-items-center g-3">
+              <label for="editStatusSelect" class="col-4">Select status : </label>
+              <select id="editStatusSelect" class="form-select-sm custom-input col text-light bg-black" required>
+                <option value="Watching">Watching</option>
+                <option value="Watched">Watched</option>
+                <option value="Plan to Watch">Plan to Watch</option>
+                <option value="Dropped">Dropped</option>
+              </select>
+            </div>
+            <div class="mb-3 row align-items-center g-3">
+              <label for="editRateInput" class="col-4">Rate (1-10) : </label>
+              <input type="number" id="editRateInput" min="1" max="10"
+                class="custom-input col form-control-sm text-light bg-black" placeholder="Rate between 1 and 10">
+            </div>
+            <div class="mb-3 row align-items-center g-3">
+              <label for="editEpWatchedInput" class="col-4">Eps Watched :</label>
+              <input type="number" id="editEpWatchedInput" min="0"
+                class="custom-input col form-control-sm text-light bg-black">
+            </div>
+            <button type="submit" class="btn my-btn w-100 py-2 mt-3 text-white">Update Entry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="global.js"></script>
+  <script src="profile.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
