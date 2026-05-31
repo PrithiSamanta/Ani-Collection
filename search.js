@@ -60,7 +60,7 @@ async function searchAnime(q) {
         // anime.sort((a,b)=>b.members - a.members);
         
         console.log(anime);
-        const gridContainer = document.querySelector(".grid-container");
+        const gridContainer = document.querySelector(".grid-container-search");
 
         const searchHead = document.querySelector("h2");
         searchHead.textContent = `Search results for : ${q}`;

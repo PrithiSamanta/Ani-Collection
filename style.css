@@ -104,6 +104,7 @@ html {
 
 
 
+
 /* home.html */
 
 .main {
@@ -149,7 +150,7 @@ html {
 
 
 .dropdown-menu .dropdown-item:hover {
-    background-color: #4a4a4a !important; 
+    background-color: #4a4a4a !important;
 
 }
 
@@ -334,9 +335,11 @@ html {
         display: flex !important;
     }
 }
+
 @media (max-width:576px) {
-    .main nav{
-        margin: 0 5px !important;
+    .main nav {
+        margin: 0 !important;
+        padding-left: 5px !important;
         padding-right: 15px !important;
     }
 }
@@ -483,15 +486,17 @@ html {
 /*  */
 
 #details-wrapper {
-    margin: 40px auto !important; 
-   max-width: 1400px;
+    margin: 40px auto !important;
+    max-width: 1400px;
     margin-top: 120px !important;
 }
 
 #image-details {
     width: 100%;
-    max-width: 250px;       /* Prevents the poster image from blowing up too huge on big screens */
-    aspect-ratio: 2 / 3;    /* Locks it to a standard vertical anime poster shape */
+    max-width: 250px;
+    /* Prevents the poster image from blowing up too huge on big screens */
+    aspect-ratio: 2 / 3;
+    /* Locks it to a standard vertical anime poster shape */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -508,7 +513,8 @@ html {
 #read-more {
     display: -webkit-box;
     line-clamp: 3;
-    -webkit-line-clamp: 3; /* Show 3 clean lines before truncation */
+    -webkit-line-clamp: 3;
+    /* Show 3 clean lines before truncation */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -521,11 +527,12 @@ html {
 }
 
 @media (max-width: 768px) {
-    #details-wrapper{
+    #details-wrapper {
         margin-top: 70px !important;
         gap: 20px
     }
-    .navbar{
+
+    .navbar {
         padding-left: 10px !important;
         padding-right: 10px !important;
     }
@@ -534,7 +541,7 @@ html {
 
 /* sign in sign up */
 
-.modal-content{
+.modal-content {
     border: 1px ridge var(--accent-hover) !important;
     box-shadow: 0 0px 20px 5px rgba(208, 0, 0, 0.4) !important;
 }
@@ -644,6 +651,9 @@ html {
 .profile-nav-tabs {
     border-bottom: 1px solid #1a1a1a !important;
     gap: 8px;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: #7a0000 #141414;
 }
 
 .profile-nav-tabs .nav-link {
@@ -666,9 +676,23 @@ html {
     border-bottom: 3px solid var(--accent-color) !important;
 }
 
+.watchlist-search-container {
+    position: relative;
+}
+
+.watchlist-search-icon {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+
+.watchlist-search-container input {
+    padding-left: 30px !important;
+}
+
 .watchlist-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 25px;
     padding: 20px 0;
 }
@@ -682,11 +706,6 @@ html {
     position: relative;
 }
 
-.watchlist-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(208, 0, 0, 0.4);
-    box-shadow: 0 10px 20px rgba(208, 0, 0, 0.15);
-}
 
 .watchlist-card-img-wrapper {
     position: relative;
@@ -700,10 +719,6 @@ html {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
-}
-
-.watchlist-card:hover .watchlist-card-img-wrapper img {
-    transform: scale(1.04);
 }
 
 .watchlist-card-overlay {
@@ -720,11 +735,31 @@ html {
     gap: 12px;
     opacity: 0;
     transition: opacity 0.25s ease;
-    z-index: 10;
+    z-index: 100;
+    display: none;
 }
 
-.watchlist-card:hover .watchlist-card-overlay {
-    opacity: 1;
+.watchlist-card-overlay.d-flex {
+    opacity: 1 !important;
+}
+
+@media(hover:hover) {
+
+    .watchlist-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(208, 0, 0, 0.4);
+        box-shadow: 0 10px 20px rgba(208, 0, 0, 0.15);
+    }
+
+    .watchlist-card:hover .watchlist-card-img-wrapper img {
+        transform: scale(1.04);
+    }
+
+    .watchlist-card:hover .watchlist-card-overlay {
+        opacity: 1;
+        display: flex;
+    }
+
 }
 
 .watchlist-card-body {
@@ -772,7 +807,7 @@ html {
     font-size: 11px;
     font-weight: 700;
     z-index: 5;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .status-indicator {
@@ -783,24 +818,61 @@ html {
     margin-right: 6px;
 }
 
-.status-watching-dot { background-color: #198754; }
-.status-watched-dot { background-color: #0d6efd; }
-.status-plan-dot { background-color: #ffc107; }
-.status-dropped-dot { background-color: #dc3545; }
+.status-watching-dot {
+    background-color: #198754;
+}
+
+.status-watched-dot {
+    background-color: #0d6efd;
+}
+
+.status-plan-dot {
+    background-color: #ffc107;
+}
+
+.status-dropped-dot {
+    background-color: #dc3545;
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .profile-container {
-        margin-top: 90px auto 40px auto !important;
+        margin: 65px auto 40px auto !important;
+        padding: 0px;
     }
-    
+
+    .profile-card {
+        padding: 10px 20px !important;
+    }
+
     .avatar-container {
-        width: 100px;
-        height: 100px;
+        width: 70px !important;
+        height: 70px !important;
     }
-    
+
+    #user-name {
+        font-size: 18px !important;
+    }
+
+    #user-rank {
+        padding: 5px 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    #watchlistTabs button {
+        font-size: 12x !important;
+        padding: 4px 10px !important;
+    }
+
     .watchlist-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
         gap: 15px;
     }
+}
+
+
+/* to fix the overflow issue */
+html,
+body {
+    overflow-x: hidden !important;
 }

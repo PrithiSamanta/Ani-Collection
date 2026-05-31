@@ -4,7 +4,6 @@ const SUPABASE_KEY = "sb_publishable_gzp4BWt8LIjpMFKEYuDSng_VOyCbGw3";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Ensure your supabase client is running at the top of the file!
 // const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 document.addEventListener("DOMContentLoaded", async (e) => {
@@ -245,118 +244,69 @@ window.handleWatchlistButtonClick = async function(event) {
     }
 };
 
-// --- WATCHLIST DATABASE UTILITIES (Supabase + LocalStorage Fallback) ---
 
+/**
+ * Fetch data straight from the cloud.
+ * Returns an empty array if the user has no items yet.
+ */
 window.getWatchlistData = async function(userId) {
-    try {
-        const { data, error } = await supabaseClient
-            .from('watchlist')
-            .select('*')
-            .eq('user_id', userId);
-            
-        if (error) {
-            console.warn("[Watchlist] Supabase query returned an error, using LocalStorage fallback:", error.message);
-            const localData = localStorage.getItem(`watchlist_${userId}`);
-            return localData ? JSON.parse(localData) : [];
-        }
-        return data || [];
-    } catch (err) {
-        console.warn("[Watchlist] Exception querying Supabase, using LocalStorage fallback:", err);
-        const localData = localStorage.getItem(`watchlist_${userId}`);
-        return localData ? JSON.parse(localData) : [];
-    }
-};
-
-window.saveWatchlistItem = async function(userId, item) {
-    try {
-        const payload = {
-            user_id: userId,
-            mal_id: item.mal_id,
-            title: item.title,
-            image_url: item.image_url,
-            status: item.status,
-            score: item.score,
-            episodes_watched: item.episodes_watched,
-            total_episodes: item.total_episodes,
-            updated_at: new Date().toISOString()
-        };
-
-        const { error } = await supabaseClient
-            .from('watchlist')
-            .upsert(payload);
-
-        if (error) {
-            console.warn("[Watchlist] Supabase upsert error, falling back to LocalStorage:", error.message);
-            saveToLocal(userId, item);
-            return { success: true, source: 'localStorage' };
-        }
+    const { data, error } = await supabaseClient
+        .from('user_anime_list')
+        .select('*')
+        .eq('user_id', userId);
         
-        // Also keep localStorage in sync just in case
-        saveToLocal(userId, item);
-        return { success: true, source: 'supabase' };
-    } catch (err) {
-        console.warn("[Watchlist] Exception upserting to Supabase, falling back to LocalStorage:", err);
-        saveToLocal(userId, item);
-        return { success: true, source: 'localStorage' };
+    if (error) {
+        console.error("[Supabase Fetch Error]:", error.message, error.details);
+        throw new Error(`Failed to fetch watchlist: ${error.message}`);
     }
-};
-
-window.deleteWatchlistItem = async function(userId, malId) {
-    try {
-        const { error } = await supabaseClient
-            .from('watchlist')
-            .delete()
-            .eq('user_id', userId)
-            .eq('mal_id', malId);
-
-        if (error) {
-            console.warn("[Watchlist] Supabase delete error, falling back to LocalStorage:", error.message);
-            deleteFromLocal(userId, malId);
-            return { success: true, source: 'localStorage' };
-        }
-        
-        deleteFromLocal(userId, malId);
-        return { success: true, source: 'supabase' };
-    } catch (err) {
-        console.warn("[Watchlist] Exception deleting from Supabase, falling back to LocalStorage:", err);
-        deleteFromLocal(userId, malId);
-        return { success: true, source: 'localStorage' };
-    }
-};
-
-function saveToLocal(userId, item) {
-    const key = `watchlist_${userId}`;
-    const localData = localStorage.getItem(key);
-    const list = localData ? JSON.parse(localData) : [];
-    const index = list.findIndex(i => i.mal_id === item.mal_id);
     
-    const cleanItem = {
+    return data || [];
+};
+
+/**
+ * Pure Upsert: Inserts a new anime or updates an existing entry if user_id+mal_id matches.
+ */
+window.saveWatchlistItem = async function(userId, item) {
+    const payload = {
         user_id: userId,
-        mal_id: item.mal_id,
+        mal_id: parseInt(item.mal_id), // Force integer matching
         title: item.title,
         image_url: item.image_url,
         status: item.status,
-        score: item.score,
-        episodes_watched: item.episodes_watched,
-        total_episodes: item.total_episodes,
+        score: item.score ? parseInt(item.score) : null,
+        episodes_watched: parseInt(item.episodes_watched) || 0,
+        total_episodes: parseInt(item.total_episodes) || 0,
         updated_at: new Date().toISOString()
     };
 
-    if (index > -1) {
-        list[index] = cleanItem;
-    } else {
-        list.push(cleanItem);
-    }
-    localStorage.setItem(key, JSON.stringify(list));
-}
+    const { data, error } = await supabaseClient
+        .from('user_anime_list')
+        .upsert(payload, { onConflict: 'user_id,mal_id' });
 
-function deleteFromLocal(userId, malId) {
-    const key = `watchlist_${userId}`;
-    const localData = localStorage.getItem(key);
-    if (localData) {
-        let list = JSON.parse(localData);
-        list = list.filter(i => i.mal_id !== malId);
-        localStorage.setItem(key, JSON.stringify(list));
+    if (error) {
+        console.error("❌ [Supabase Save Error]:", error.message, error.details);
+        throw new Error(`Failed to save watchlist item: ${error.message}`);
     }
-}
+    
+    console.log("[Supabase Sync]: Watchlist saved successfully!");
+    return { success: true };
+};
 
+/**
+ * Pure Delete: Removes the entry permanently from your cloud database table row.
+ */
+window.deleteWatchlistItem = async function(userId, malId) {
+    const { error } = await supabaseClient
+        .from('user_anime_list')
+        .delete()
+        .eq('user_id', userId)
+        .eq('mal_id', parseInt(malId));
+
+    if (error) {
+        console.error(" [Supabase Delete Error]:", error.message, error.details);
+        throw new Error(`Failed to delete watchlist item: ${error.message}`);
+    }
+
+    console.log(" [Supabase Sync]: Watchlist item deleted successfully!");
+    return { success: true };
+};
