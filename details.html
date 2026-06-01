@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Ani Collection - Details</title>
+    <meta name="description" content="Read full synopses, episode counts, score data, studio profiles, and release information for your favorite anime series on Ani Collection.">
+    <meta name="keywords" content="anime info, anime synopsis, episode counts, score tracking details">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -17,30 +19,28 @@
 
     <nav class="navbar d-flex justify-content-between align-items-center px-4 fixed-top">
         <div>
-            <a href="home.html">
-                <img src="./images/logo.png" alt="" class="logo">
+            <a href="home.html" aria-label="Return to Ani Collection Home">
+                <img src="./images/logo.webp" alt="Ani Collection Logo" class="logo">
             </a>
         </div>
         <div>
             <div class="search-container">
                 <i class="bi bi-search search-icon"></i>
                 <input type="search" placeholder="Search Anime.." class="custom-input bg-black text-light form-control"
-                    id="searchInput">
+                    id="searchInput" aria-label="Search through anime catalog database">
             </div>
         </div>
         <div id="nav-auth-container">
-
             <button type="button" class="btn text-white  my-btn" data-bs-toggle="modal"
                 data-bs-target="#signInModal">Sign In</button>
-
         </div>
     </nav>
 
-
-    <div id="details-wrapper" class="row justify-content-center align-items-start placeholder-glow ">
+    <main id="details-wrapper" class="row justify-content-center align-items-start placeholder-glow ">
 
         <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center">
             <div id="image-details" class="placeholder bg-secondary rounded-3 w-100">
+                <span class="visually-hidden">Loading anime dynamic cover poster art...</span>
             </div>
         </div>
 
@@ -51,29 +51,22 @@
             <p class="placeholder col-9 bg-secondary rounded py-2"></p>
         </div>
 
-    </div>
+    </main>
 
-
-
-    <div
-        class="bottom-nav d-flex justify-content-between align-items-center px-3 py-1 m-2 position-fixed bottom-0 bg-black rounded-3 d-none z-2">
-        <a href="home.html"
-            class="home text-decoration-none text-white d-flex justify-content-between align-items-center flex-column">
+    <div class="bottom-nav d-flex justify-content-between align-items-center px-3 py-1 m-2 position-fixed bottom-0 bg-black rounded-3 d-none z-2">
+        <a href="home.html" class="home text-decoration-none text-white d-flex justify-content-between align-items-center flex-column" aria-label="Navigate to Home Page">
             <i class="bi bi-house-fill "></i>
             <p>Home</p>
         </a>
-        <a href="search.html"
-            class="search text-decoration-none text-white d-flex justify-content-between align-items-center flex-column">
+        <a href="search.html" class="search text-decoration-none text-white d-flex justify-content-between align-items-center flex-column" aria-label="Navigate to Search Page">
             <i class="bi bi-search"></i>
             <p>Search</p>
         </a>
-        <a href="profile.html"
-            class="profile text-decoration-none text-white d-flex justify-content-between align-items-center flex-column">
+        <a href="profile.html" class="profile text-decoration-none text-white d-flex justify-content-between align-items-center flex-column" aria-label="Navigate to Profile Dashboard Watchlist">
             <i class="bi bi-person-circle"></i>
             <p>Profile</p>
         </a>
     </div>
-
 
     <div class="modal fade text-white" id="signUpModal" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
         <div class="modal-dialog modal-dialog-centered">
@@ -85,17 +78,17 @@
                 <div class="modal-body">
                     <form id="signUpForm" autocomplete="off">
                         <div class="mb-3">
-                            <label class="form-label">Email address</label>
+                            <label for="signUpEmail" class="form-label">Email address</label>
                             <input type="email" id="signUpEmail" class="form-control custom-input bg-black"
                                 placeholder="name@example.com" required autocomplete="off">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Password</label>
+                            <label for="signUpPassword" class="form-label">Password</label>
                             <input type="password" id="signUpPassword" class="form-control custom-input bg-black"
                                 placeholder="At least 6 characters" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Confirm Password</label>
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
                             <input type="password" id="confirmPassword" class="form-control custom-input bg-black"
                                 placeholder="Confirm Password" required autocomplete="new-password">
                         </div>
@@ -103,8 +96,7 @@
                     </form>
                 </div>
                 <p class="ms-3 text-secondary">Already have an account ? <a href="" class="opacity-75"
-                        data-bs-toggle="modal" data-bs-target="#signInModal" style="color: var(--accent-color);">Sign
-                        in</a>
+                        data-bs-toggle="modal" data-bs-target="#signInModal" style="color: var(--accent-color);">Sign in</a>
                 </p>
             </div>
         </div>
@@ -120,12 +112,12 @@
                 <div class="modal-body">
                     <form id="signInForm" autocomplete="off">
                         <div class="mb-3">
-                            <label class="form-label">Email address</label>
+                            <label for="signInEmail" class="form-label">Email address</label>
                             <input type="email" id="signInEmail" class="form-control bg-black custom-input"
                                 placeholder="name@example.com" required autocomplete="off">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Password</label>
+                            <label for="signInPassword" class="form-label">Password</label>
                             <input type="password" id="signInPassword" class="form-control bg-black custom-input"
                                 placeholder="Enter password" required>
                         </div>
@@ -138,7 +130,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="modal fade text-white" id="addToListModal" tabindex="-1" data-bs-theme="dark" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered ">
@@ -171,7 +162,6 @@
                         <button type="submit" class="btn my-btn ms-auto d-block">Add</button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -179,7 +169,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="global.js"></script>
     <script src="details.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>

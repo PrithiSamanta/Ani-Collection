@@ -310,3 +310,17 @@ window.deleteWatchlistItem = async function(userId, malId) {
     console.log(" [Supabase Sync]: Watchlist item deleted successfully!");
     return { success: true };
 };
+
+
+//navbar color change after scroll
+
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector(".navbar");
+  
+  // Change color after scrolling 200px
+  if (window.scrollY > 200) {
+    nav.classList.add("bg-black")
+  } else {
+    nav.classList.remove("bg-black");
+  }
+});

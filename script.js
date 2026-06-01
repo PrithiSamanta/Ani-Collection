@@ -116,10 +116,14 @@ async function getCurrentlyAiringAniList() {
                     ? anilistAnime.description.replace(/<\/?[^>]+(>|$)/g, "")
                     : "No description available for this currently airing title.";
 
+                const imageAttributes = index === 0 
+            ? `fetchpriority="high" decoding="async"` 
+            : `loading="lazy" decoding="async"`;
+
                 //add text dynamically
                 item.innerHTML = `
                 <div class="carousel-binder" mal-id ="${malId}">
-                    <img src="${banner}" class="d-block w-100 carousel-banner-img" alt="${title} Banner">
+                    <img src="${banner}" class="d-block w-100 carousel-banner-img" alt="${title} Banner" ${imageAttributes}>
                     <div class="carousel-caption d-flex flex-column justify-content-center align-items-start text-start px-4 py-3 rounded">
                         
                         <h2 class="fw-bold text-truncate display-4 mb-5" style="max-width: 60%;">${title}</h2>
@@ -239,11 +243,15 @@ async function getAnimeCards(url, selectContainer) {
 
 
         animeContainer.innerHTML = "";
+
+        // FIX: Create a Document Fragment. This acts as an invisible lightweight DOM container.
+        // We attach our cards to this fragment in memory, causing ZERO layout reflows!
+        const fragment = document.createDocumentFragment();
         uniqueAnime.forEach((e) => {
             const animeCard = document.createElement("div");
 
-            const animePoster = e.images.webp.large_image_url;
-            const animeTitle = e.title_english || e.titles;
+            const animePoster = e.images.webp.image_url;
+            const animeTitle = e.title_english || e.title;
             const score = e.score ? e.score : "NA";
             const animeEpisodes = e.episodes ? `${e.episodes} eps|` : "";
             const animeGenre = e.genres[0].name;
@@ -251,14 +259,20 @@ async function getAnimeCards(url, selectContainer) {
 
             animeCard.setAttribute("mal-id", e.mal_id)
             animeCard.innerHTML = `
-                <div class="img-wrapper rounded-3"><img src="${animePoster}" alt="${animeTitle}" class="rounded-3"></div>
-                <h5 class="text-white text-truncate pt-2">${animeTitle}</h5>
+                <div class="img-wrapper rounded-3"><img src="${animePoster}" alt="${animeTitle}" class="rounded-3" loading="lazy" decoding="async"></div>
+                <h4 class="text-white text-truncate pt-2">${animeTitle}</h4>
                 <p class="text-secondary">${animeEpisodes}${animeGenre}|${animeType}</p>
                 <span class=" badge text-warning bg-dark rounded-pill position-absolute top-0 m-2"><i class="bi bi-star-fill pe-1"></i>${score}</span>
             `;
             animeCard.classList.add("anime-card", "position-relative");
-            animeContainer.append(animeCard);
+
+            // Append to fragment instead of the main container
+            fragment.appendChild(animeCard);
         })
+        animeContainer.innerHTML = "";
+        //  FIX: Append the entire fragment to the container in a single operation.
+        // This causes only ONE layout reflow, making the page load instantly.
+        animeContainer.appendChild(fragment);
     }
     catch (err) {
         console.log("Can't get top trending animes", err)

@@ -82,13 +82,13 @@ async function refreshWatchlist() {
     try {
         // Fetch a fresh batch of data straight from Supabase
         activeWatchlist = await window.getWatchlistData(currentUser.id);
-        
+
         // Sort initially by updated_at descending
         sortWatchlist();
-        
+
         // Compute stats
         computeStats();
-        
+
         // Render list onto the screen grid
         renderWatchlist();
     } catch (err) {
@@ -355,8 +355,16 @@ function setupProfileForm() {
 
     // Random username generator
     randomizeBtn.addEventListener("click", () => {
-        const randomNames = ["Goku", "Luffy", "Zoro", "Naruto", "Sasuke", "Kakashi", "Deku", "Gojo", "Sukuna", "Tanjiro", "Nezuko", "Saitama", "Levi", "Eren", "Mikasa", "Alucard", "Saber", "Killua", "Gon", "Hisoka", "Kurosaki", "Ichigo", "Vegeta", "Sanji", "Nami"];
-        const randomSuffixes = ["Senpai", "Sensei", "Sama", "Kun", "San", "Chan", "Otaku", "Hokage", "Pirate", "Hunter", "Shinigami", "Titan"];
+        const randomNames = [
+            "Goku", "Luffy", "Zoro", "Naruto", "Sasuke", "Kakashi", "Deku", "Gojo", "Sukuna",
+            "Tanjiro", "Nezuko", "Saitama", "Levi", "Eren", "Mikasa", "Alucard", "Saber",
+            "Killua", "Gon", "Hisoka", "Kurosaki", "Ichigo", "Vegeta", "Sanji", "Nami",
+            "Light", "L_Lawliet", "Edward", "Alphonse", "Mustang", "Kaneki", "Rimuru",
+            "Anya", "Loid", "Yor", "Denji", "Makima", "Power", "Aizen", "Rukia",
+            "Bakugo", "Todoroki", "Kurapika", "Chollo", "Yusuke", "Hiei", "Dio",
+            "Jotaro", "Guts", "Griffith", "Mob", "Reigen"
+        ];
+        const randomSuffixes = ["Senpai", "Sensei", "Sama", "Kun", "San", "Chan", "Otaku", "Hokage", "Pirate", "Hunter", "Shinigami", "Titan", "Ninja", "Demon", "Vampire", "Dragon", "Angel", "Wizard", "Warrior", "Mage", "Cyberpunk", "Legend", "Master", "King", "Queen"];
 
         const randName = randomNames[Math.floor(Math.random() * randomNames.length)];
         const randSuffix = randomSuffixes[Math.floor(Math.random() * randomSuffixes.length)];
@@ -445,18 +453,18 @@ window.openEditWatchlistModal = function (malId) {
     document.querySelector("#editEpWatchedInput").value = item.episodes_watched || 0;
 
     // Set episode limit based on the current anime's total episode count
-        const epInput = document.querySelector("#editEpWatchedInput");
-        if (epInput && item.total_episodes) {
-            const totalEps = item.total_episodes;
-            if (totalEps > 0) {
-                epInput.max = totalEps;
-                epInput.placeholder = `0 - ${totalEps}`;
-            } else {
-                epInput.removeAttribute("max");
-                epInput.placeholder = "0";
-            }
-            epInput.value = "";
+    const epInput = document.querySelector("#editEpWatchedInput");
+    if (epInput && item.total_episodes) {
+        const totalEps = item.total_episodes;
+        if (totalEps > 0) {
+            epInput.max = totalEps;
+            epInput.placeholder = `0 - ${totalEps}`;
+        } else {
+            epInput.removeAttribute("max");
+            epInput.placeholder = "0";
         }
+        epInput.value = "";
+    }
 
     const editModalEl = document.getElementById("editWatchlistModal");
     const modalInstance = new bootstrap.Modal(editModalEl);

@@ -5,21 +5,34 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ani Collection - Home</title>
+    <meta name="description" content="Explore Ani Collection to discover trending anime titles, look up seasonal release schedules, track your personal watchlist, and organize your favorite animations.">
+    <meta name="keywords" content="anime tracker, watchlist manager, otaku collection, track episodes, seasonal anime">
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://api.jikan.moe">
+    <link rel="preconnect" href="https://graphql.anilist.co">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="./images/favicon(1).ico" type="image/png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" 
+          media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    </noscript>
+
+    <link rel="icon" href="./images/favicon(1).ico" type="image/ico">
 
 </head>
 
 <body class="bg-black">
 
-    <div class="main">
+    <div class="main" role="main">
         <nav class="navbar d-flex justify-content-between align-items-center pe-5">
             <div>
-                <a href="home.html">
-                    <img src="./images/logo.png" alt="" class="logo">
+                <a href="home.html" aria-label="Return to Ani Collection Home">
+                    <img src="./images/logo.webp" alt="Ani Collection Logo" class="logo">
                 </a>
             </div>
             <div>
@@ -145,9 +158,9 @@
         <div class="d-flex justify-content-between">
             <h3 class="text-white ps-2 my-1 mx-1">Top Rated</h3>
             <div class="align-self-end">
-                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#top-container"><i
+                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#top-container" aria-label="scroll top rated anime list left"><i
                         class="bi bi-arrow-left"></i></button>
-                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#top-container"><i
+                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#top-container" aria-label="scroll top rated anime list right"><i
                         class="bi bi-arrow-right"></i></button>
             </div>
         </div>
@@ -161,9 +174,9 @@
         <div class="d-flex justify-content-between">
             <h3 class="text-white ps-2 my-1 mx-1">All-Time Classics</h3>
             <div class="align-self-end">
-                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#classic-container"><i
+                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#classic-container" aria-label="scroll classics anime list left"><i
                         class="bi bi-arrow-left"></i></button>
-                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#classic-container"><i
+                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#classic-container" aria-label="scroll classics anime list right"><i
                         class="bi bi-arrow-right"></i></button>
             </div>
         </div>
@@ -177,9 +190,9 @@
         <div class="d-flex justify-content-between">
             <h3 class="text-white ps-2 my-1 mx-1">Coming soon</h3>
             <div class="align-self-end">
-                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container"><i
+                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container" aria-label="scroll upcoming anime list left"><i
                         class="bi bi-arrow-left"></i></button>
-                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container"><i
+                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container" aria-label="scroll upcoming anime list right"><i
                         class="bi bi-arrow-right"></i></button>
             </div>
         </div>
@@ -282,9 +295,9 @@
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
-    <script src="global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="script.js" defer></script>
+    <script src="global.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>

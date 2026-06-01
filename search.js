@@ -80,7 +80,7 @@ async function searchAnime(q) {
             animeCard.innerHTML = `
             <a href="details.html?mal_id=${e.mal_id}" class="text-decoration-none anime-card-link">
                 <div class="img-wrapper rounded-3"><img src="${animePoster}" alt="${animeTitle}" class="rounded-3"></div>
-                <h5 class="text-white text-truncate pt-2">${animeTitle}</h5>
+                <h3 class="text-white text-truncate pt-2">${animeTitle}</h3>
                 <p class="text-secondary">${animeEpisodes}${animeGenre}|${animeType}</p>
                 <span class=" badge text-warning bg-dark rounded-pill position-absolute top-0 m-2"><i class="bi bi-star-fill pe-1"></i>${score}</span>
                 </a>

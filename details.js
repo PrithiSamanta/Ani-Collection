@@ -91,7 +91,7 @@ async function getAnimeDetails(malId) {
         window.currentAnime = currentAnime; // keep global reference in sync
         const animeScore = anime.score || "";
         const animeScoredBy = anime.scored_by || "";
-        const animeRating = animeScore && animeScoredBy ? `<span class="badge fs-6 text-bg-warning px-2"><i class="bi bi-star-fill"></i> ${animeScore} <span style="font-size:14px">(${animeScoredBy})</span></span>` : "";
+        const animeRating = animeScore && animeScoredBy ? `<span class="badge border border-secondary fs-6 text-bg-dark px-2"><i class="bi bi-star-fill text-warning"></i> ${animeScore} <span style="font-size:14px">(${animeScoredBy})</span></span>` : "";
         const animeSeason = anime.season && anime.year ? `${anime.season} ${anime.year}` : "";
         const animeGenre = anime.genres.map((genre) => {
             return `<span class="badge border border-secondary">${genre.name}</span>`
@@ -110,9 +110,9 @@ async function getAnimeDetails(malId) {
 
         textCont.innerHTML = `
             <h2 class="mb-3 pe-3 text-white">${animeTitleEng}</h2>
-        <p class="py-2 d-flex gap-3 flex-wrap"> ${animeRating}
-            <span class="badge fs-6 text-bg-warning px-2">${animeType}</span><span class="badge fs-6 text-bg-warning px-2">${animeStatus}</span><span class="badge fs-6 text-bg-warning p-1">${animeSeason}</span>
-            <span class="badge fs-6 border border-secondary fw-normal text-">${animeEpisodes} episodes</span>
+        <p class="py-2 d-flex gap-3 flex-wrap align-items-center rating-row"> ${animeRating}
+            <span class="badge fs-6 text-bg-dark border border-secondary px-2">${animeType}</span><span class="badge fs-6 text-bg-dark border border-secondary ">${animeStatus}</span><span class="badge fs-6 text-bg-dark border border-secondary">${animeSeason}</span>
+            <span class="badge fs-6 text-bg-dark border border-secondary">${animeEpisodes} episodes</span>
         </p>
         <div class="synopsis-container">
     <p class="pt-2 text-light m-0" id="read-more">${animeDesp}</p>

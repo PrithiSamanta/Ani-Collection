@@ -3,6 +3,14 @@
     --accent-hover: #ac0000;
 }
 
+/* FIX: RESOLVE FONT DISPLAY TIMEOUTS  */
+@font-face {
+    font-family: 'bootstrap-icons';
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/fonts/bootstrap-icons.woff2?e348531d2793efab0cb2db9b794f9b81') format('woff2'),
+         url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/fonts/bootstrap-icons.woff?e348531d2793efab0cb2db9b794f9b81') format('woff');
+}
+
 /* styling for index  */
 
 
@@ -22,6 +30,7 @@ nav {
 
 nav .logo {
     height: 65px;
+    width: auto;
     object-fit: contain;
 }
 
@@ -121,6 +130,7 @@ html {
     padding-right: 4.2rem !important;
     /* Activates z-index positioning */
     z-index: 10;
+    transition: all 0.2s ease;
 }
 
 .search-container {
@@ -395,15 +405,16 @@ html {
 }
 
 /* Card typography adjustments */
-.anime-card h5 {
+.anime-card h4 {
     /* width: 220px; */
-    font-size: medium;
+    font-size: 18px;
     margin-bottom: 5px !important;
 }
 
 .anime-card p {
     width: 100%;
     font-size: small;
+    color: #7d7d7d !important;
 }
 
 
@@ -524,6 +535,12 @@ html {
 #read-more.expanded {
     display: block;
 
+}
+
+.rating-row .badge {
+    background-color: rgb(0, 0, 0) !important;
+    color: rgb(255, 255, 255) !important;
+    /* border: 1px solid rgb(55, 55, 55); */
 }
 
 @media (max-width: 768px) {
