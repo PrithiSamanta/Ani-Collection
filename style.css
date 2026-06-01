@@ -8,7 +8,7 @@
     font-family: 'bootstrap-icons';
     font-display: swap;
     src: url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/fonts/bootstrap-icons.woff2?e348531d2793efab0cb2db9b794f9b81') format('woff2'),
-         url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/fonts/bootstrap-icons.woff?e348531d2793efab0cb2db9b794f9b81') format('woff');
+        url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/fonts/bootstrap-icons.woff?e348531d2793efab0cb2db9b794f9b81') format('woff');
 }
 
 /* styling for index  */
@@ -363,11 +363,6 @@ html {
     margin-bottom: 0px !important;
 }
 
-
-
-
-
-
 /* Applies to all 3 main wrapper containers */
 .anime-section {
     max-width: 96%;
@@ -446,6 +441,9 @@ html {
     .anime-card {
         width: 200px !important;
     }
+    .anime-card h4 {
+        font-size: 16px !important;
+    }
 }
 
 @media(max-width:992px) {
@@ -459,18 +457,21 @@ html {
         width: 150px !important;
     }
 
-    .anime-card h5 {
+    .anime-card h4 {
         font-size: 14px;
     }
 
     .anime-card p {
-        font-size: 12px;
+        font-size: 12px !important;
     }
 }
 
 @media(max-width:576px) {
     .anime-card {
         width: 140px !important;
+    }
+    .anime-card h4 {
+        font-size: 12px !important;
     }
 }
 
@@ -504,7 +505,7 @@ html {
 
 #image-details {
     width: 100%;
-    max-width: 250px;
+    max-width: 270px;
     /* Prevents the poster image from blowing up too huge on big screens */
     aspect-ratio: 2 / 3;
     /* Locks it to a standard vertical anime poster shape */
@@ -538,22 +539,178 @@ html {
 }
 
 .rating-row .badge {
-    background-color: rgb(0, 0, 0) !important;
+    background-color: rgb(27, 27, 27) !important;
     color: rgb(255, 255, 255) !important;
-    /* border: 1px solid rgb(55, 55, 55); */
 }
 
-@media (max-width: 768px) {
+/* Info Card styling */
+.info-card {
+    border: 1px solid #333;
+    /* background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); */
+}
+
+.info-stat {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.info-stat:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.info-stat p:first-child {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-stat div span {
+    font-size: 0.95rem !important;
+    opacity: 0.9;
+}
+
+.info-stat p:last-child {
+    font-size: 0.95rem;
+    color: var(--accent-color) !important;
+    margin-bottom: 10px !important;
+    opacity: 0.9;
+}
+
+.info-stat div {
+    margin-bottom: 10px !important;
+}
+
+.img-info-wrapper {
+    width: 300px;
+}
+
+/* Image centering */
+#details-wrapper>div:first-child {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Mobile responsive info card */
+@media(max-width: 768px) {
     #details-wrapper {
         margin-top: 70px !important;
-        gap: 20px
+        gap: 20px;
     }
 
     .navbar {
         padding-left: 10px !important;
         padding-right: 10px !important;
     }
+
+    .info-card {
+        padding: 2px 12px !important;
+    }
+
+    .info-stat {
+        padding-bottom: 8px;
+        margin-bottom: 0;
+    }
+
+    .info-stat p:first-child {
+        font-size: 0.65rem;
+        margin-bottom: 2px !important;
+    }
+
+    .info-stat div span {
+        font-size: 0.85rem !important;
+    }
+
+    .info-stat p:last-child {
+        font-size: 0.85rem;
+    }
+
+    .info-stat #info-genre,
+    .info-stat #info-studio {
+        font-size: 0.8rem;
+    }
+
+    .info-card {
+        padding: 6px 8px !important;
+        margin-top: 10px !important;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .img-wrapper {
+        width: 100%;
+        aspect-ratio: 2/3;
+    }
+
+    .rating-row {
+        gap: 10px !important;
+    }
+
+    .rating-row span {
+        font-size: 14px !important;
+    }
+    .img-info-wrapper {
+        width: 100%;
+    }
+    #image-details {
+        max-width: 250px;
+    }
+    #image-info-card{
+        width:75%
+    }
 }
+
+@media(max-width: 576px) {
+
+
+    .info-stat {
+        padding-bottom: 6px;
+        border-bottom: none !important;
+        margin-bottom: 0;
+    }
+
+    .info-stat p:first-child {
+        font-size: 0.65rem;
+        margin-bottom: 2px !important;
+    }
+
+    .info-stat p:last-child {
+        font-size: 0.8rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    .info-stat div span {
+        font-size: 0.8rem !important;
+    }
+
+    .rating-row {
+        gap: 8px !important;
+    }
+
+    .rating-row span {
+        font-size: 12px !important;
+    }
+
+    .trailer-container {
+        margin-top: 10px !important;
+    }
+
+    .trailer-container h3 {
+        font-size: 1.2rem !important;
+        margin-bottom: 16px !important;
+        padding-bottom: 4px !important;
+    }
+    #image-details {
+        max-width: 200px;
+    }
+    #image-info-card{
+        width:100%
+    }
+}
+
 
 
 /* sign in sign up */
@@ -892,4 +1049,25 @@ html {
 html,
 body {
     overflow-x: hidden !important;
+}
+
+/* Trailer section styling */
+.trailer-container {
+    padding: 0;
+}
+
+.trailer-container h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 12px;
+}
+
+#trailer-video {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+}
+
+#trailer-iframe {
+    border: none;
 }

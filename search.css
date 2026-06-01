@@ -174,12 +174,12 @@ h2 {
     .hero-title {
         font-size: 2.2rem !important;
     }
-    .grid-container-search h5{
-        font-size: 14px;
+    .grid-container-search h3{
+        font-size: 14px !important;
         margin-bottom: 3px !important;
     }
     .grid-container-search p{
-        font-size: 12px;
+        font-size: 12px !important;
     }
 }
 

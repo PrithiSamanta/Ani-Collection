@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ani Collection - Details</title>
-    <meta name="description" content="Read full synopses, episode counts, score data, studio profiles, and release information for your favorite anime series on Ani Collection.">
+    <meta name="description"
+        content="Read full synopses, episode counts, score data, studio profiles, and release information for your favorite anime series on Ani Collection.">
     <meta name="keywords" content="anime info, anime synopsis, episode counts, score tracking details">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -39,8 +40,46 @@
     <main id="details-wrapper" class="row justify-content-center align-items-start placeholder-glow ">
 
         <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center">
-            <div id="image-details" class="placeholder bg-secondary rounded-3 w-100">
-                <span class="visually-hidden">Loading anime dynamic cover poster art...</span>
+            <div class="d-flex justify-content-center align-items-center flex-column img-info-wrapper">
+                <div id="image-details" class="placeholder bg-secondary rounded-3">
+                    <span class="visually-hidden">Loading anime dynamic cover poster art...</span>
+                </div>
+
+                <div id="image-info-card" class="info-card mt-3 p-3 bg-black rounded-3 d-none">
+                    <div class="info-stat mb-2">
+                        <p class="text-light text-opacity-75 small mb-1">Source</p>
+                        <p class="text-white fw-bold" id="info-source">-</p>
+                    </div>
+                    <div class="info-stat mb-2">
+                        <p class="text-light text-opacity-75 small mb-1">Rating</p>
+                        <p class="text-white fw-bold" id="info-rating">-</p>
+                    </div>
+                    <div class="info-stat mb-2">
+                        <p class="text-light text-opacity-75 small mb-1">Genre</p>
+                        <div id="info-genre" class="d-flex gap-1 flex-wrap"></div>
+                    </div>
+                    <div class="info-stat mb-2">
+                        <p class="text-light text-opacity-75 small mb-1">Studio</p>
+                        <div id="info-studio" class="d-flex gap-1 flex-wrap"></div>
+                    </div>
+                    <div class="info-stat mb-2">
+                        <p class="text-light text-opacity-75 small mb-1">Duration</p>
+                        <p class="text-white fw-bold" id="info-duration">-</p>
+                    </div>
+                    <div class="info-stat mb-2">
+                        <p class="text-light text-opacity-75 small mb-1">Rank</p>
+                        <p class="text-white fw-bold" id="info-rank">-</p>
+                    </div>
+                    <div class="info-stat mb-2">
+                        <p class="text-light text-opacity-75 small mb-1">Popularity</p>
+                        <p class="text-white fw-bold" id="info-popularity">-</p>
+                    </div>
+                    <div class="info-stat">
+                        <p class="text-light text-opacity-75 small mb-1">Members</p>
+                        <p class="text-white fw-bold" id="info-members">-</p>
+                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -53,16 +92,23 @@
 
     </main>
 
-    <div class="bottom-nav d-flex justify-content-between align-items-center px-3 py-1 m-2 position-fixed bottom-0 bg-black rounded-3 d-none z-2">
-        <a href="home.html" class="home text-decoration-none text-white d-flex justify-content-between align-items-center flex-column" aria-label="Navigate to Home Page">
+    <div
+        class="bottom-nav d-flex justify-content-between align-items-center px-3 py-1 m-2 position-fixed bottom-0 bg-black rounded-3 d-none z-2">
+        <a href="home.html"
+            class="home text-decoration-none text-white d-flex justify-content-between align-items-center flex-column"
+            aria-label="Navigate to Home Page">
             <i class="bi bi-house-fill "></i>
             <p>Home</p>
         </a>
-        <a href="search.html" class="search text-decoration-none text-white d-flex justify-content-between align-items-center flex-column" aria-label="Navigate to Search Page">
+        <a href="search.html"
+            class="search text-decoration-none text-white d-flex justify-content-between align-items-center flex-column"
+            aria-label="Navigate to Search Page">
             <i class="bi bi-search"></i>
             <p>Search</p>
         </a>
-        <a href="profile.html" class="profile text-decoration-none text-white d-flex justify-content-between align-items-center flex-column" aria-label="Navigate to Profile Dashboard Watchlist">
+        <a href="profile.html"
+            class="profile text-decoration-none text-white d-flex justify-content-between align-items-center flex-column"
+            aria-label="Navigate to Profile Dashboard Watchlist">
             <i class="bi bi-person-circle"></i>
             <p>Profile</p>
         </a>
@@ -96,7 +142,8 @@
                     </form>
                 </div>
                 <p class="ms-3 text-secondary">Already have an account ? <a href="" class="opacity-75"
-                        data-bs-toggle="modal" data-bs-target="#signInModal" style="color: var(--accent-color);">Sign in</a>
+                        data-bs-toggle="modal" data-bs-target="#signInModal" style="color: var(--accent-color);">Sign
+                        in</a>
                 </p>
             </div>
         </div>
@@ -143,7 +190,8 @@
                     <form id="addToListForm">
                         <div class="mb-3 row align-items-center g-3">
                             <label for="statusSelect" class="col-4">Select status : </label>
-                            <select id="statusSelect" class="form-select-sm custom-input col text-light bg-black" aria-label="Watchlist Status" required>
+                            <select id="statusSelect" class="form-select-sm custom-input col text-light bg-black"
+                                aria-label="Watchlist Status" required>
                                 <option value="" selected disabled>Select status</option>
                                 <option value="Watching">Watching</option>
                                 <option value="Watched">Watched</option>
@@ -153,11 +201,14 @@
                         </div>
                         <div class="mb-3 row align-items-center g-3">
                             <label for="rateInput" class="col-4">Rate : </label>
-                            <input type="number" id="rateInput" min="1" max="10" class="custom-input col form-control-sm text-light bg-black" placeholder="Rate between 1 and 10">
+                            <input type="number" id="rateInput" min="1" max="10"
+                                class="custom-input col form-control-sm text-light bg-black"
+                                placeholder="Rate between 1 and 10">
                         </div>
                         <div class="mb-3 row align-items-center g-3">
                             <label for="epWatchedInput" class="col-4">Eps Watched :</label>
-                            <input type="number" id="epWatchedInput" min="0" class="custom-input col form-control-sm text-light bg-black" placeholder="0">
+                            <input type="number" id="epWatchedInput" min="0"
+                                class="custom-input col form-control-sm text-light bg-black" placeholder="0">
                         </div>
                         <button type="submit" class="btn my-btn ms-auto d-block">Add</button>
                     </form>
@@ -165,6 +216,9 @@
             </div>
         </div>
     </div>
+
+
+    <div style="height: 100px;"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="global.js"></script>

@@ -105,8 +105,47 @@ async function getAnimeDetails(malId) {
         imgDetails.innerHTML = `
             <img src="${animeImg}" alt="${animeTitleEng}" class="rounded-3">
         `;
+        
+        // Populate info card
+        const infoCard = document.querySelector("#image-info-card");
+        document.querySelector("#info-source").textContent = anime.source || "-";
+        document.querySelector("#info-rating").textContent = anime.rating || "-";
+        document.querySelector("#info-duration").textContent = anime.duration || "-";
+        document.querySelector("#info-rank").textContent = anime.rank ? `#${anime.rank}` : "-";
+        document.querySelector("#info-popularity").textContent = anime.popularity ? `#${anime.popularity}` : "-";
+        document.querySelector("#info-members").textContent = anime.members ? anime.members.toLocaleString() : "-";
+        
+        // Add genre badges to info card
+        const genreContainer = document.querySelector("#info-genre");
+        genreContainer.innerHTML = anime.genres.map((genre) => {
+            return `<span style="color: var(--accent-color); font-weight: 600;">${genre.name}</span>`
+        }).join("");
+        
+        // Add studio badges to info card
+        const studioContainer = document.querySelector("#info-studio");
+        studioContainer.innerHTML = anime.studios.map((studio) => {
+            return `<span style="color: var(--accent-color); font-weight: 600;">${studio.name}</span>`
+        }).join("");
+        
+        infoCard.classList.remove("d-none");
 
         const textCont = document.querySelector("#text-details")
+        
+        let trailerHTML = "";
+        if (anime.trailer && (anime.trailer.youtube_id || anime.trailer.embed_url)) {
+            let trailerSrc = anime.trailer.youtube_id 
+                ? `https://www.youtube.com/embed/${anime.trailer.youtube_id}`
+                : anime.trailer.embed_url;
+            
+            trailerHTML = `
+                <div class="trailer-container mt-2">
+                    <h3 class="text-white mb-4">Trailer</h3>
+                    <div class="ratio ratio-16x9 rounded-3 overflow-hidden">
+                        <iframe class="rounded-3" src="${trailerSrc}" allowfullscreen="" title="Anime Trailer"></iframe>
+                    </div>
+                </div>
+            `;
+        }
 
         textCont.innerHTML = `
             <h2 class="mb-3 pe-3 text-white">${animeTitleEng}</h2>
@@ -114,15 +153,14 @@ async function getAnimeDetails(malId) {
             <span class="badge fs-6 text-bg-dark border border-secondary px-2">${animeType}</span><span class="badge fs-6 text-bg-dark border border-secondary ">${animeStatus}</span><span class="badge fs-6 text-bg-dark border border-secondary">${animeSeason}</span>
             <span class="badge fs-6 text-bg-dark border border-secondary">${animeEpisodes} episodes</span>
         </p>
-        <div class="synopsis-container">
+        <div class="synopsis-container mb-4">
     <p class="pt-2 text-light m-0" id="read-more">${animeDesp}</p>
     
-    <a id="read-more-btn" class="text-danger fw-bold d-block  mb-4 link-danger link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover" style="cursor: pointer;">Read More</a>
+    <a id="read-more-btn" class="text-danger fw-bold d-block mt-2 link-danger link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover" style="cursor: pointer;">Read More</a>
 </div>
-        <p class="d-flex gap-2">${animeGenre}</p>
-        <p class="d-flex gap-2">${animeStudio}</p>
-        <button class="my-btn add-to-list text-white fw-bold btn" role="button"  id="addToListBtn" onclick="handleWatchlistButtonClick(event)" aria-disabled="true"><i class="bi bi-plus-lg  pe-2 fw-bold"></i>Add to list</button>
+        <button class="my-btn add-to-list text-white fw-bold btn btn-lg mb-4" role="button"  id="addToListBtn" onclick="handleWatchlistButtonClick(event)" aria-disabled="true"><i class="bi bi-plus-lg  pe-2 fw-bold"></i>Add to list</button>
 
+        ${trailerHTML}
         `;
 
         // Array.from(textCont.children).forEach(e => {
