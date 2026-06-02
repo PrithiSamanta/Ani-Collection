@@ -43,7 +43,7 @@ class RequestQueue {
     }
 }
 
-const requestQueue = new RequestQueue(500); // 1 second between requests
+const requestQueue = new RequestQueue(1000); // 1 second between requests
 
 
 document.addEventListener("DOMContentLoaded", () => {
