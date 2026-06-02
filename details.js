@@ -5,6 +5,46 @@ const malId = searchParams.get("mal_id");
 let currentAnime = null;
 window.currentAnime = null; // expose globally for use in global.js
 
+// Request queue for rate limiting
+class RequestQueue {
+    constructor(delayMs = 1000) {
+        this.queue = [];
+        this.isProcessing = false;
+        this.delayMs = delayMs;
+    }
+
+    async add(fn) {
+        return new Promise((resolve, reject) => {
+            this.queue.push({ fn, resolve, reject });
+            this.process();
+        });
+    }
+
+    async process() {
+        if (this.isProcessing || this.queue.length === 0) return;
+        this.isProcessing = true;
+
+        while (this.queue.length > 0) {
+            const { fn, resolve, reject } = this.queue.shift();
+            try {
+                const result = await fn();
+                resolve(result);
+            } catch (err) {
+                reject(err);
+            }
+            
+            // Wait before processing next request
+            if (this.queue.length > 0) {
+                await new Promise(r => setTimeout(r, this.delayMs));
+            }
+        }
+
+        this.isProcessing = false;
+    }
+}
+
+const requestQueue = new RequestQueue(500); // 1 second between requests
+
 
 document.addEventListener("DOMContentLoaded", () => {
     getAnimeDetails(malId);
@@ -127,6 +167,19 @@ async function getAnimeDetails(malId) {
             return `<span style="color: var(--accent-color); font-weight: 600;">${studio.name}</span>`
         }).join("");
         
+        // Add streaming platforms
+        const platformsList = document.querySelector("#platforms-list");
+        if (anime.streaming && anime.streaming.length > 0) {
+            platformsList.innerHTML = anime.streaming.map((stream) => {
+                return `<a href="${stream.url}" target="_blank" rel="noopener noreferrer" class="platform-btn">
+                    <span>${stream.name}</span>
+                    <i class="bi bi-box-arrow-up-right ms-1"></i>
+                </a>`
+            }).join("");
+        } else {
+            platformsList.innerHTML = '<span class="text-secondary small">Not available</span>';
+        }
+        
         infoCard.classList.remove("d-none");
 
         const textCont = document.querySelector("#text-details")
@@ -161,6 +214,9 @@ async function getAnimeDetails(malId) {
         <button class="my-btn add-to-list text-white fw-bold btn btn-lg mb-4" role="button"  id="addToListBtn" onclick="handleWatchlistButtonClick(event)" aria-disabled="true"><i class="bi bi-plus-lg  pe-2 fw-bold"></i>Add to list</button>
 
         ${trailerHTML}
+        
+        <div id="anime-relations-container"></div>
+        <div id="similar-animes-container"></div>
         `;
 
         // Array.from(textCont.children).forEach(e => {
@@ -181,6 +237,176 @@ async function getAnimeDetails(malId) {
                 readMoreBtn.textContent = "Read Less";
             }
         });
+
+        // Fetch and render anime relations
+        try {
+            const relationsRes = await fetch(`https://api.jikan.moe/v4/anime/${malId}/relations`);
+            const relationsData = await relationsRes.json();
+            
+            if (relationsData.data && relationsData.data.length > 0) {
+                const relationsContainer = document.querySelector("#anime-relations-container");
+                
+                // Collect all anime entries first
+                const allRelations = [];
+                relationsData.data.forEach(relation => {
+                    const relationType = relation.relation;
+                    const entries = relation.entry;
+                    
+                    if (Array.isArray(entries)) {
+                        entries.forEach(entry => {
+                            if (entry.type === "anime") {
+                                allRelations.push({ entry, relationType });
+                            }
+                        });
+                    }
+                });
+                
+                // Only render if there are anime relations
+                if (allRelations.length > 0) {
+                    // Build HTML
+                    let relationsHTML = `
+                        <div class="anime-relations mt-5">
+                            <h3 class="text-white mb-4">Related Anime</h3>
+                            <div class="relations-list">
+                    `;
+                    
+                    allRelations.forEach(({ entry, relationType }) => {
+                        relationsHTML += `
+                            <a href="details.html?mal_id=${entry.mal_id}" class="relation-item" id="relation-${entry.mal_id}">
+                                <div class="relation-image-wrapper"></div>
+                                <span class="relation-type">${relationType}</span>
+                                <span class="relation-title">
+                                    ${entry.name}
+                                </span>
+                            </a>
+                        `;
+                    });
+                    
+                    relationsHTML += `
+                            </div>
+                        </div>
+                    `;
+                    
+                    relationsContainer.innerHTML = relationsHTML;
+                    
+                    // Fetch images with rate limiting
+                    for (let i = 0; i < allRelations.length; i++) {
+                        const { entry } = allRelations[i];
+                        
+                        requestQueue.add(async () => {
+                            try {
+                                const imageRes = await fetch(`https://api.jikan.moe/v4/anime/${entry.mal_id}`);
+                                const imageData = await imageRes.json();
+                                
+                                if (imageData.status === 429) {
+                                    // Rate limited, wait and retry
+                                    await new Promise(resolve => setTimeout(resolve, 2000));
+                                    const retryRes = await fetch(`https://api.jikan.moe/v4/anime/${entry.mal_id}`);
+                                    const retryData = await retryRes.json();
+                                    const imageUrl = retryData.data?.images?.jpg?.image_url || '';
+                                    
+                                    const imageWrapper = document.querySelector(`#relation-${entry.mal_id} .relation-image-wrapper`);
+                                    if (imageWrapper && imageUrl) {
+                                        const imgHTML = `<img src="${imageUrl}" alt="${entry.name}" class="relation-image">`;
+                                        imageWrapper.insertAdjacentHTML('afterbegin', imgHTML);
+                                    }
+                                } else {
+                                    const imageUrl = imageData.data?.images?.webp?.image_url || '';
+                                    const imageWrapper = document.querySelector(`#relation-${entry.mal_id} .relation-image-wrapper`);
+                                    
+                                    if (imageWrapper && imageUrl) {
+                                        const imgHTML = `<img src="${imageUrl}" alt="${entry.name}" class="relation-image">`;
+                                        imageWrapper.insertAdjacentHTML('afterbegin', imgHTML);
+                                    }
+                                }
+                            } catch (err) {
+                                console.error('Error fetching relation anime image:', err);
+                            }
+                        });
+                    }
+                }
+            }
+        } catch (err) {
+            console.log("Error fetching anime relations", err);
+        }
+
+        // Fetch and render similar animes
+        try {
+            const recommendationsRes = await fetch(`https://api.jikan.moe/v4/anime/${malId}/recommendations`);
+            const recommendationsData = await recommendationsRes.json();
+            
+            if (recommendationsData.data && recommendationsData.data.length > 0) {
+                const similarContainer = document.querySelector("#similar-animes-container");
+                
+                let similarHTML = `
+                    <div class="similar-animes mt-5">
+                        <h3 class="text-white mb-4">Similar Animes</h3>
+                        <div class="similar-list">
+                `;
+                
+                // Show first 4 recommendations
+                const recommendations = recommendationsData.data.slice(0, 5);
+                
+                for (const rec of recommendations) {
+                    const anime = rec.entry;
+                    
+                    similarHTML += `
+                        <a href="details.html?mal_id=${anime.mal_id}" class="similar-item" id="similar-${anime.mal_id}">
+                            <div class="similar-image-wrapper"></div>
+                            <span class="similar-title">
+                                ${anime.title}
+                            </span>
+                        </a>
+                    `;
+                }
+                
+                similarHTML += `
+                        </div>
+                    </div>
+                `;
+                
+                similarContainer.innerHTML = similarHTML;
+                
+                // Fetch images asynchronously with rate limiting
+                for (let i = 0; i < recommendations.length; i++) {
+                    const rec = recommendations[i];
+                    const anime = rec.entry;
+                    
+                    requestQueue.add(async () => {
+                        try {
+                            const imageRes = await fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}`);
+                            const imageData = await imageRes.json();
+                            
+                            if (imageData.status === 429) {
+                                // Rate limited, wait and retry
+                                await new Promise(resolve => setTimeout(resolve, 2000));
+                                const retryRes = await fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}`);
+                                const retryData = await retryRes.json();
+                                const imageUrl = retryData.data?.images?.jpg?.image_url || '';
+                                
+                                const imageWrapper = document.querySelector(`#similar-${anime.mal_id} .similar-image-wrapper`);
+                                if (imageWrapper && imageUrl) {
+                                    const imgHTML = `<img src="${imageUrl}" alt="${anime.title}" class="similar-image">`;
+                                    imageWrapper.insertAdjacentHTML('afterbegin', imgHTML);
+                                }
+                            } else {
+                                const imageUrl = imageData.data?.images?.jpg?.image_url || '';
+                                const imageWrapper = document.querySelector(`#similar-${anime.mal_id} .similar-image-wrapper`);
+                                
+                                if (imageWrapper && imageUrl) {
+                                    const imgHTML = `<img src="${imageUrl}" alt="${anime.title}" class="similar-image">`;
+                                    imageWrapper.insertAdjacentHTML('afterbegin', imgHTML);
+                                }
+                            }
+                        } catch (err) {
+                            console.error('Error fetching similar anime image:', err);
+                        }
+                    });
+                }
+            }
+        } catch (err) {
+            console.log("Error fetching similar animes", err);
+        }
     }
     catch (err) {
         console.log("Error getting anime details", err)
