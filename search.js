@@ -35,7 +35,6 @@ const q = searchParams.get("q");
 
 document.addEventListener("DOMContentLoaded", () => {
     searchAnime(q);
-    console.log("hi")
 })
 
 async function searchAnime(q) {
@@ -43,6 +42,8 @@ async function searchAnime(q) {
         if(q==="" || q===null){
             return;
         }
+        searchInput.value=q;
+        searchInputSm.value=q;
         document.querySelector("#search-load").classList.remove("d-none");//adds load animation
         const url = `https://api.jikan.moe/v4/anime?q=${q}`;
         const response = await fetch(url);
