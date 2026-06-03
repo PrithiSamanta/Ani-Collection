@@ -35,6 +35,7 @@ const q = searchParams.get("q");
 
 document.addEventListener("DOMContentLoaded", () => {
     searchAnime(q);
+    console.log("hi")
 })
 
 async function searchAnime(q) {
@@ -42,6 +43,7 @@ async function searchAnime(q) {
         if(q==="" || q===null){
             return;
         }
+        document.querySelector("#search-load").classList.remove("d-none");//adds load animation
         const url = `https://api.jikan.moe/v4/anime?q=${q}`;
         const response = await fetch(url);
         const result = await response.json();
@@ -87,6 +89,7 @@ async function searchAnime(q) {
             `;
             animeCard.classList.add("anime-card", "position-relative");
             gridContainer.append(animeCard);
+            document.querySelector("#search-load").classList.add("d-none");//removes load animation
         });
 
     }
