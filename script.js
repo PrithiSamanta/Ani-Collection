@@ -49,6 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
         getTopRatedAnimes();         // Jikan Section 1
         getAllTimeClassics();        // Jikan Section 2
         getUpcomingAnimes();         // Jikan Section 3
+        getAnimeSchedule("monday");
+
+        // Add interactive day switching to the weekly schedule
+        const dayButtons = document.querySelectorAll("#day-container .day");
+        dayButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                dayButtons.forEach(b => {
+                    b.classList.remove("btn-danger");
+                    b.classList.add("btn-outline-danger");
+                });
+                btn.classList.remove("btn-outline-danger");
+                btn.classList.add("btn-danger");
+                getAnimeSchedule(btn.id);
+            });
+        });
     }
 });
 
@@ -279,6 +294,68 @@ async function getAnimeCards(url, selectContainer) {
     }
 }
 
+async function getAnimeSchedule(q){
+    try{
+        const response = await fetch(`https://api.jikan.moe/v4/schedules?filter=${q}`);
+        if(response.status === 429){
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            return getAnimeSchedule(q);
+        }
+        const result = await response.json();
+
+        if(!result) return;
+        
+        const schedule = result.data;
+
+        if(!schedule) return;
+
+        let uniqueSchedule = new Set();
+        uniqueSchedule  = schedule.filter(val => !uniqueSchedule.has(val.mal_id) && uniqueSchedule.add(val.mal_id));//filter out duuuuuuuplicate anime
+        uniqueSchedule.sort((a,b)=> a.popularity-b.popularity);//sorts on basis of popularity
+
+        const container = document.querySelector("#schedule-container");
+
+        const fragment = document.createDocumentFragment();
+
+        uniqueSchedule.forEach(e => {
+            const animeCard = document.createElement("div");
+            const animePoster = e.images.webp.image_url;
+            const animeTitle = e.title_english || e.title;
+            const score = e.score ? e.score : "NA";
+            const animeEpisodes = e.episodes ? `${e.episodes} eps` : "";
+            const animeGenre = e.genres[0] ?  `${e.genres[0].name}|` : "";
+            const animeType = `${e.type} |` || "TV";
+            const broadcastTime = `${e.broadcast?.string}` || "NA";
+
+            animeCard.setAttribute("mal-id", e.mal_id);
+            animeCard.innerHTML = `
+                <div class="d-flex justify-content-start h-100 gap-3 ms-2">
+                    <div class="img-wrapper">
+                        <img src="${animePoster}" alt="${animeTitle}" class="rounded-3" loading="lazy" decoding="async">
+                    </div>
+                    <div class="d-flex flex-column ">
+                        <h4 class="text-white  pt-2">${animeTitle}</h4>
+                        <div class="text-secondary"><span class="text-secondary mb-0">${broadcastTime}</span>
+                        </div>
+                        <div class="text-secondary"><span class="text-secondary mb-0">${animeGenre}</span><span class="text-secondary mb-0">${animeType}</span><span class="text-secondary mb-0">${animeEpisodes}</span></div>
+                    </div>
+                </div>
+            `;
+            animeCard.classList.add("anime-schedule", "position-relative");
+
+            // Append to fragment instead of the main container
+            fragment.appendChild(animeCard);
+        });
+        container.innerHTML = "";
+        //  FIX: Append the entire fragment to the container in a single operation.
+        // This causes only ONE layout reflow, making the page load instantly.
+        container.appendChild(fragment);
+                
+    }
+    catch(err){
+        console.log("Can't get scheduled anime",err);
+    }
+}
 
 //section scroll
 function scrollSection(sectionSelector, direction) {
@@ -393,6 +470,7 @@ document.querySelectorAll(".right-scroll").forEach(button => {
 document.body.addEventListener(("click"), async (event) => {
     try {
         const animeCard = event.target.closest(".anime-card");
+        const animeSchedule = event.target.closest(".anime-schedule");
         const viewDetails = event.target.closest("#view-details");
 
         // if (!animeCard || !viewDetails) return;
@@ -403,6 +481,9 @@ document.body.addEventListener(("click"), async (event) => {
         }
         else if (viewDetails) {
             window.location.href = `details.html?mal_id=${viewDetails.getAttribute("mal-id")}`;
+        }
+        else if(animeSchedule){
+            window.location.href = `details.html?mal_id=${animeSchedule.getAttribute("mal-id")}`;
         }
         else {
             return;

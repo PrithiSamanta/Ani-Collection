@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ani Collection - Home</title>
-    <meta name="description" content="Explore Ani Collection to discover trending anime titles, look up seasonal release schedules, track your personal watchlist, and organize your favorite animations.">
+    <meta name="description"
+        content="Explore Ani Collection to discover trending anime titles, look up seasonal release schedules, track your personal watchlist, and organize your favorite animations.">
     <meta name="keywords" content="anime tracker, watchlist manager, otaku collection, track episodes, seasonal anime">
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -16,8 +17,8 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" 
-          media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+        media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     </noscript>
@@ -158,10 +159,10 @@
         <div class="d-flex justify-content-between">
             <h3 class="text-white ps-2 my-1 mx-1">Top Rated</h3>
             <div class="align-self-end">
-                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#top-container" aria-label="scroll top rated anime list left"><i
-                        class="bi bi-arrow-left"></i></button>
-                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#top-container" aria-label="scroll top rated anime list right"><i
-                        class="bi bi-arrow-right"></i></button>
+                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#top-container"
+                    aria-label="scroll top rated anime list left"><i class="bi bi-arrow-left"></i></button>
+                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#top-container"
+                    aria-label="scroll top rated anime list right"><i class="bi bi-arrow-right"></i></button>
             </div>
         </div>
         <div class="card-wrapper  d-flex overflow-x-auto gap-4 py-3 px-1 loading-skeleton" id="top-container">
@@ -174,10 +175,10 @@
         <div class="d-flex justify-content-between">
             <h3 class="text-white ps-2 my-1 mx-1">All-Time Classics</h3>
             <div class="align-self-end">
-                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#classic-container" aria-label="scroll classics anime list left"><i
-                        class="bi bi-arrow-left"></i></button>
-                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#classic-container" aria-label="scroll classics anime list right"><i
-                        class="bi bi-arrow-right"></i></button>
+                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#classic-container"
+                    aria-label="scroll classics anime list left"><i class="bi bi-arrow-left"></i></button>
+                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#classic-container"
+                    aria-label="scroll classics anime list right"><i class="bi bi-arrow-right"></i></button>
             </div>
         </div>
 
@@ -190,16 +191,33 @@
         <div class="d-flex justify-content-between">
             <h3 class="text-white ps-2 my-1 mx-1">Coming soon</h3>
             <div class="align-self-end">
-                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container" aria-label="scroll upcoming anime list left"><i
-                        class="bi bi-arrow-left"></i></button>
-                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container" aria-label="scroll upcoming anime list right"><i
-                        class="bi bi-arrow-right"></i></button>
+                <button class="left-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container"
+                    aria-label="scroll upcoming anime list left"><i class="bi bi-arrow-left"></i></button>
+                <button class="right-scroll btn btn-outline-danger btn-sm" data-target="#upcoming-container"
+                    aria-label="scroll upcoming anime list right"><i class="bi bi-arrow-right"></i></button>
             </div>
         </div>
-
         <div class="card-wrapper  d-flex overflow-x-auto gap-4 py-3 px-1 loading-skeleton" id="upcoming-container">
-
         </div>
+    </div>
+
+    <div class="anime-section mb-2 weekly-schedule">
+        <h3 class="text-white ps-2 my-1 mx-1">Weekly Schedule</h3>
+        <div class="days d-flex justify-content-between py-3 ps-2" id="day-container">
+            <div class="day btn btn-danger" id="monday"><span class="d-sm-block d-none">Monday</span><span class="d-block d-sm-none">MON</span></div>
+            <div class="day btn btn-outline-danger" id="tuesday"><span class="d-sm-block d-none">Tuesday</span><span class="d-block d-sm-none">TUE</span></div>
+            <div class="day btn btn-outline-danger" id="wednesday"><span class="d-sm-block d-none">Wednesday</span><span class="d-block d-sm-none">WED</span></div>
+            <div class="day btn btn-outline-danger" id="thursday"><span class="d-sm-block d-none">Thursday</span><span class="d-block d-sm-none">THU</span></div>
+            <div class="day btn btn-outline-danger" id="friday"><span class="d-sm-block d-none">Friday</span><span class="d-block d-sm-none">FRI</span></div>
+            <div class="day btn btn-outline-danger" id="saturday"><span class="d-sm-block d-none">Saturday</span><span class="d-block d-sm-none">SAT</span></div>
+            <div class="day btn btn-outline-danger" id="sunday"><span class="d-sm-block d-none">Sunday</span><span class="d-block d-sm-none">SUN</span></div>
+        </div>
+
+        
+
+        <div class="schedule-container ps-2 pt-1" id="schedule-container">
+        </div>
+
     </div>
 
 
