@@ -49,7 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
         getTopRatedAnimes();         // Jikan Section 1
         getAllTimeClassics();        // Jikan Section 2
         getUpcomingAnimes();         // Jikan Section 3
-        getAnimeSchedule("monday");
+        //get schedule with respect to current day
+        const days = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+        const date = new Date();
+        const day = date.getDay();
+        getAnimeSchedule(days[day]);
+        document.querySelector(`#${days[day]}`).classList.remove("btn-outline-danger");
+        document.querySelector(`#${days[day]}`).classList.add("btn-danger");
+        
 
         // Add interactive day switching to the weekly schedule
         const dayButtons = document.querySelectorAll("#day-container .day");
@@ -296,6 +303,7 @@ async function getAnimeCards(url, selectContainer) {
 
 async function getAnimeSchedule(q){
     try{
+
         const response = await fetch(`https://api.jikan.moe/v4/schedules?filter=${q}`);
         if(response.status === 429){
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -334,7 +342,7 @@ async function getAnimeSchedule(q){
                         <img src="${animePoster}" alt="${animeTitle}" class="rounded-3" loading="lazy" decoding="async">
                     </div>
                     <div class="d-flex flex-column ">
-                        <h4 class="text-white  pt-2">${animeTitle}</h4>
+                        <h4 class="text-white  pt-1">${animeTitle}</h4>
                         <div class="text-secondary"><span class="text-secondary mb-0">${broadcastTime}</span>
                         </div>
                         <div class="text-secondary"><span class="text-secondary mb-0">${animeGenre}</span><span class="text-secondary mb-0">${animeType}</span><span class="text-secondary mb-0">${animeEpisodes}</span></div>

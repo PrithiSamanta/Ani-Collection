@@ -453,8 +453,11 @@ html {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 1.3rem;
 }
-
+.anime-schedule span{
+    font-size: 0.9rem;
+}
 .anime-schedule{
     height: 120px !important; 
     margin-bottom: 16px !important;
