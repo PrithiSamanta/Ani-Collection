@@ -114,13 +114,14 @@ async function getAnimeDetails(malId) {
 
         const anime = result.data;
 
-        document.title=`${anime.title}`;
+        
         const animeTitleEng = anime.title_english || anime.title;
         const animeImg = anime.images.webp.large_image_url || anime.images.webp.image_url;
         const animeDesp = anime.synopsis;
         const animeType = anime.type;
         const animeEpisodes = anime.episodes || "TBA";
         const animeStatus = anime.status;
+        const airing = anime.status==="Currently Airing" && anime.broadcast.string ? `Airs on ${anime.broadcast.string}` :"";
 
         currentAnime = {
             mal_id: anime.mal_id,
@@ -128,6 +129,7 @@ async function getAnimeDetails(malId) {
             image_url: animeImg,
             total_episodes: anime.episodes || 0
         };
+        document.title=animeTitleEng;
         window.currentAnime = currentAnime; // keep global reference in sync
         const animeScore = anime.score || "";
         const animeScoredBy = anime.scored_by || "";
@@ -144,6 +146,7 @@ async function getAnimeDetails(malId) {
 
         imgDetails.innerHTML = `
             <img src="${animeImg}" alt="${animeTitleEng}" class="rounded-3">
+            <div class="position-absolute bottom-0 bg-danger text-white w-100 text-center fw-bold">${airing}</div>
         `;
         
         // Populate info card
