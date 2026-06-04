@@ -645,6 +645,8 @@ html {
     object-position: center;
 }
 
+
+
 #read-more {
     display: -webkit-box;
     line-clamp: 3;
@@ -831,6 +833,9 @@ html {
     }
     #image-info-card{
         width:100%
+    }
+    #image-details div{
+        font-size: 0.8rem !important;
     }
 }
 
