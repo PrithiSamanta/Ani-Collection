@@ -478,6 +478,9 @@ html {
         /* font-size: 12px !important; */
         padding: 4px 6px !important;    
     }
+    .card-wrapper{
+        gap: 20px !important;
+    }
 }
 @media(max-width:992px) {
     .weekly-schedule {
@@ -490,6 +493,9 @@ html {
     }
     #day-container .day{
          padding: 6px 10px !important;  
+    }
+    .card-wrapper{
+        gap: 15px !important;
     }
 }
 
@@ -524,8 +530,10 @@ html {
         
     }
     .anime-schedule span{
-        font-size: 14px;
-        
+        font-size: 14px; 
+    }
+    .card-wrapper{
+        gap: 12px !important;
     }
 }
 @media(max-width:576px){

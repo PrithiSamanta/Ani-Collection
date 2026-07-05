@@ -148,8 +148,8 @@ async function getCurrentlyAiringAniList() {
                     <img src="${banner}" class="d-block w-100 carousel-banner-img" alt="${title} Banner" ${imageAttributes}>
                     <div class="carousel-caption d-flex flex-column justify-content-center align-items-start text-start px-4 py-3 rounded">
                         
-                        <h2 class="fw-bold text-truncate display-4 mb-5" style="max-width: 60%;">${title}</h2>
-                        <div class=" status-div ">
+                        <h2 class="fw-bold text-truncate display-4 mb-1" style="max-width: 60%;">${title}</h2>
+                        <div class=" status-div mb-2">
                                 <span class="badge badge-meta me-2 bg-dark text-warning border border-secondary border-opacity-50">★ ${score}</span>
                                 <span class="badge badge-meta me-2 bg-dark text-light border border-secondary border-opacity-50"><i class="bi bi-play-btn-fill me-1"></i>${totalEpisodes}</span>
                               <span class="badge badge-meta me-2 bg-dark text-info border border-secondary border-opacity-50">${releaseStatus}</span>
@@ -255,6 +255,8 @@ async function getAnimeCards(url, selectContainer) {
         const result = await response.json();
 
         const anime = result.data;
+
+        if(!anime) return;
 
         // const uniqueAnime = [...new Set(anime.mal_id)];
         const seenIds = new Set();
