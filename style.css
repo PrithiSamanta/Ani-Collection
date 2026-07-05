@@ -241,11 +241,7 @@ html {
     /* Overrides Bootstrap's single-line constraint */
 }
 
-.status-div {
-    position: absolute;
-    top: 90px;
 
-}
 
 .carousel-indicators .active {
     background-color: var(--accent-color) !important;
@@ -266,15 +262,10 @@ html {
     .carousel-caption h2 {
         font-size: 40px;
         max-width: 80% !important;
-        margin-bottom: 40px !important;
     }
 
     .carousel-caption p {
         max-width: 80% !important;
-    }
-
-    .status-div {
-        top: 70px;
     }
 
     .carousel-caption button {
@@ -286,16 +277,11 @@ html {
     .carousel-caption h2 {
         font-size: 30px;
         max-width: 100% !important;
-        margin-bottom: 40px !important;
     }
 
     .carousel-caption p {
         max-width: 120% !important;
         font-size: 14px;
-    }
-
-    .status-div {
-        top: 40px;
     }
 
     .carousel-caption button {
@@ -382,7 +368,6 @@ html {
 .img-wrapper {
     position: relative;
     width: 100%;
-
     aspect-ratio: 2 / 3;
     overflow: hidden;
 }
