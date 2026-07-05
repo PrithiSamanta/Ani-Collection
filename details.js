@@ -220,6 +220,7 @@ async function getAnimeDetails(malId) {
         
         <div id="anime-relations-container"></div>
         <div id="similar-animes-container"></div>
+        <div id="anime-reviews-container"></div>
         `;
 
         // Array.from(textCont.children).forEach(e => {
@@ -409,6 +410,157 @@ async function getAnimeDetails(malId) {
             }
         } catch (err) {
             console.log("Error fetching similar animes", err);
+        }
+
+        // Fetch and render reviews
+        try {
+            let reviewsRes = await fetch(`https://api.jikan.moe/v4/anime/${malId}/reviews`);
+            let reviewsData = await reviewsRes.json();
+            
+            if (reviewsData.status === 429) {
+                // Rate limited, wait and retry
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                reviewsRes = await fetch(`https://api.jikan.moe/v4/anime/${malId}/reviews`);
+                reviewsData = await reviewsRes.json();
+            }
+            
+            const reviewsContainer = document.querySelector("#anime-reviews-container");
+            if (reviewsContainer) {
+                if (reviewsData.data && reviewsData.data.length > 0) {
+                    const allReviews = reviewsData.data;
+                    let displayedCount = 3;
+                    
+                    // Function to generate HTML for a single review
+                    const renderReviewItem = (rev, index) => {
+                        const username = rev.user?.username || "Anonymous";
+                        const userUrl = rev.user?.url || "#";
+                        const avatarUrl = rev.user?.images?.jpg?.image_url || "https://www.gravatar.com/avatar/?d=mp";
+                        const score = rev.score || 0;
+                        const dateStr = rev.date ? new Date(rev.date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : "Unknown Date";
+                        const reviewText = rev.review || "";
+                        
+                        // Escape HTML characters to prevent XSS
+                        const escapedText = reviewText
+                            .replace(/&/g, "&amp;")
+                            .replace(/</g, "&lt;")
+                            .replace(/>/g, "&gt;")
+                            .replace(/"/g, "&quot;")
+                            .replace(/'/g, "&#039;");
+                        
+                        const showToggle = reviewText.length > 280;
+                        const collapsedClass = showToggle ? "collapsed" : "";
+                        const toggleButtonHTML = showToggle ? `<button class="review-toggle-btn" id="review-btn-${index}">Read More</button>` : "";
+                        
+                        return `
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-user-info">
+                                        <img src="${avatarUrl}" alt="${username}'s avatar" class="review-avatar">
+                                        <a href="${userUrl}" target="_blank" rel="noopener noreferrer" class="review-username">${username}</a>
+                                    </div>
+                                    <div class="review-meta">
+                                        <span class="review-score">
+                                            <i class="bi bi-star-fill text-warning"></i> ${score}/10
+                                        </span>
+                                        <span class="review-date">${dateStr}</span>
+                                    </div>
+                                </div>
+                                <p class="review-text ${collapsedClass}" id="review-text-${index}">${escapedText}</p>
+                                ${toggleButtonHTML}
+                            </div>
+                        `;
+                    };
+
+                    let reviewsHTML = `
+                        <div class="anime-reviews mt-5">
+                            <h3 class="text-white mb-4">Reviews</h3>
+                            <div class="reviews-list" id="reviews-list-container">
+                    `;
+                    
+                    // Render first 3 reviews
+                    const initialReviews = allReviews.slice(0, displayedCount);
+                    initialReviews.forEach((rev, index) => {
+                        reviewsHTML += renderReviewItem(rev, index);
+                    });
+                    
+                    reviewsHTML += `
+                            </div>
+                    `;
+                    
+                    // Render "Load More" button container if there are more reviews
+                    if (allReviews.length > displayedCount) {
+                        reviewsHTML += `
+                            <div class="text-center mt-4" id="load-more-container">
+                                <button class="btn my-btn text-white fw-bold px-4 py-2" id="load-more-reviews-btn">Load More Reviews</button>
+                            </div>
+                        `;
+                    }
+                    
+                    reviewsHTML += `
+                        </div>
+                    `;
+                    
+                    reviewsContainer.innerHTML = reviewsHTML;
+                    
+                    // Helper to bind toggle button for a review
+                    const bindToggleBtn = (index) => {
+                        const toggleBtn = document.getElementById(`review-btn-${index}`);
+                        const textPara = document.getElementById(`review-text-${index}`);
+                        if (toggleBtn && textPara) {
+                            toggleBtn.addEventListener("click", () => {
+                                if (textPara.classList.contains("collapsed")) {
+                                    textPara.classList.remove("collapsed");
+                                    toggleBtn.textContent = "Read Less";
+                                } else {
+                                    textPara.classList.add("collapsed");
+                                    toggleBtn.textContent = "Read More";
+                                }
+                            });
+                        }
+                    };
+                    
+                    // Bind initial toggle buttons
+                    initialReviews.forEach((_, index) => {
+                        bindToggleBtn(index);
+                    });
+                    
+                    // Bind Load More button
+                    const loadMoreBtn = document.getElementById("load-more-reviews-btn");
+                    if (loadMoreBtn) {
+                        loadMoreBtn.addEventListener("click", () => {
+                            const listContainer = document.getElementById("reviews-list-container");
+                            const nextReviews = allReviews.slice(displayedCount, displayedCount + 1);
+                            
+                            nextReviews.forEach((rev, i) => {
+                                const actualIndex = displayedCount + i;
+                                const reviewHTML = renderReviewItem(rev, actualIndex);
+                                listContainer.insertAdjacentHTML("beforeend", reviewHTML);
+                                bindToggleBtn(actualIndex);
+                            });
+                            
+                            displayedCount += nextReviews.length;
+                            
+                            // Hide Load More button if all reviews are displayed
+                            if (displayedCount >= allReviews.length) {
+                                const container = document.getElementById("load-more-container");
+                                if (container) {
+                                    container.classList.add("d-none");
+                                }
+                            }
+                        });
+                    }
+                    
+                } else {
+                    reviewsContainer.innerHTML = `
+                        <div class="anime-reviews mt-5">
+                            <h3 class="text-white mb-4">Reviews</h3>
+                            <p class="text-secondary">No reviews available for this anime.</p>
+                        </div>
+                    `;
+                }
+            }
+        } catch (err) {
+            console.log("Error fetching anime reviews", err);
         }
     }
     catch (err) {
