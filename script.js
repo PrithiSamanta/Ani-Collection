@@ -201,7 +201,7 @@ function spawnLoadingPlaceholders() {
 
 async function getTopRatedAnimes() {
     try {
-        const url = "https://api.jikan.moe/v4/top/anime?limit=10";
+        const url = "https://api.tenrai.org/v1/top/anime?limit=10";
 
         getAnimeCards(url, "#top-container")
     }
@@ -216,7 +216,7 @@ async function getTopRatedAnimes() {
 
 async function getAllTimeClassics() {
     try {
-        const url = "https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8";
+        const url = "https://api.tenrai.org/v1/top/anime?filter=bypopularity&limit=8";
 
         getAnimeCards(url, "#classic-container")
 
@@ -230,7 +230,7 @@ async function getAllTimeClassics() {
 
 async function getUpcomingAnimes() {
     try {
-        const url = "https://api.jikan.moe/v4/top/anime?filter=upcoming&limit=9";
+        const url = "https://api.tenrai.org/v1/top/anime?filter=upcoming&limit=9";
 
         getAnimeCards(url, "#upcoming-container");
     }
@@ -306,7 +306,7 @@ async function getAnimeCards(url, selectContainer) {
 async function getAnimeSchedule(q){
     try{
 
-        const response = await fetch(`https://api.jikan.moe/v4/schedules?filter=${q}`);
+        const response = await fetch(`https://api.tenrai.org/v1/schedules?filter=${q}`);
         if(response.status === 429){
             await new Promise(resolve => setTimeout(resolve, 2000));
             return getAnimeSchedule(q);

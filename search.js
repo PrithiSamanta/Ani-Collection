@@ -45,7 +45,7 @@ async function searchAnime(q) {
         searchInput.value=q;
         searchInputSm.value=q;
         document.querySelector("#search-load").classList.remove("d-none");//adds load animation
-        const url = `https://api.jikan.moe/v4/anime?q=${q}`;
+        const url = `https://api.tenrai.org/v1/anime?q=${q}`;
         const response = await fetch(url);
         const result = await response.json();
 
