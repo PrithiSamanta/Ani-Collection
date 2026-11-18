@@ -324,3 +324,16 @@ window.addEventListener('scroll', () => {
     nav.classList.remove("bg-black");
   }
 });
+
+const handleGoogleLogin = async () => {
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/home.html`, // Replace with your post-login route
+    },
+  });
+
+  if (error) {
+    console.error('Login error:', error.message);
+  }
+};

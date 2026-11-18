@@ -1661,3 +1661,72 @@ body {
         font-size: 0.85rem;
     }
 }
+
+.google-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 16px;
+  background-color: #ffffff;
+  color: #1f1f1f;
+  border: 1px solid #747775;
+  border-radius: 4px; /* Use 20px for a pill-shaped button */
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
+  user-select: none;
+}
+
+.google-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+/* Hover & Focus States */
+.google-btn:hover:not(:disabled) {
+  background-color: #f8faff;
+  border-color: #d2e3fc;
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+.google-btn:focus-visible {
+  outline: 2px solid #4285f4;
+  outline-offset: 2px;
+}
+
+/* Active (Click) State */
+.google-btn:active:not(:disabled) {
+  background-color: #ecf3fe;
+  box-shadow: none;
+}
+
+/* Disabled State */
+.google-btn:disabled {
+  background-color: #ffffff;
+  border-color: #e3e3e3;
+  color: #9aa0a6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.google-btn.dark {
+  background-color: #131314;
+  color: #e3e3e3;
+  border-color: #8e918f;
+}
+
+.google-btn.dark:hover:not(:disabled) {
+  background-color: #1e1f20;
+  border-color: #8e918f;
+}
+
+.google-btn.dark:active:not(:disabled) {
+  background-color: #282a2c;
+}
